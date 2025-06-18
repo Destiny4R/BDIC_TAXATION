@@ -1,0 +1,309 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Tax_Offices_ManagementModel
+@{
+    ViewData["Title"] = "Tax Payers";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+
+        .modal-footer button {
+            min-width: 150px;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">Tax Offices Management</h5>
+                    <small class="text-muted">Manage and monitor all tax offices configured on the platform</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-cloud-arrow-down me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <a class="btn btn-success btn-green" href="#" data-bs-toggle="modal" data-bs-target="#addTaxOfficeModal">
+                    <i class="ti-plus"></i><span>Add New Tax Office</span>
+                </a>
+            </div>
+
+        </div>
+
+        @if (TempData["success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mt-2 mb-2" role="alert">
+                <strong>
+                    <i class="fas fa-info"></i>
+                </strong> &ensp; @TempData["success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+                <strong>
+                    <i class="fas fa-exclamation-triangle"></i>
+                </strong>&ensp; @TempData["error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        <div class="card-body mt-3">
+            <table class="table" id="taxofficesTable">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Office Name</th>
+                        <th>Office Code/ID</th>
+                        <th>Region/LGA</th>
+                        <th>Status</th>
+                        <th>Date Created</th>
+                        <th>Assigned Head</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add TAX OFFICE AGENT MODAL -->
+<div class="modal fade" id="addTaxOfficeModal" tabindex="-1" aria-labelledby="addTaxOfficeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-title h3" id="addTaxOfficeModalLabel"><strong>Add New Tax Office</strong></div>
+                <small>Information</small>
+
+                <form method="post" asp-page-handler="AddOffice">
+                    <div class="mb-3">
+                        <label asp-for="taxOffice.Name" class="form-label">Office Name</label>
+                        <input type="text" class="form-control" asp-for="taxOffice.Name" />
+                        <span class="text-danger" asp-validation-for="taxOffice"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="taxOffice.LgaId" class="form-label">Region / LGA</label>
+                        <select class="form-select" asp-for="taxOffice.LgaId" asp-items="Model.ViewSelectors.Localgovernments">
+                            <option selected>Select region</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="taxOffice.LgaId"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="taxOffice.Phone" class="form-label">Office Phone</label>
+                        <input type="text" asp-for="taxOffice.Phone" class="form-control input-mask" data-inputmask="'mask': '9', 'repeat': 11, 'greedy' : false" />
+                        <span class="text-danger" asp-validation-for="taxOffice.Phone"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="taxOffice.Address" class="form-label">Office Address</label>
+                        <input type="text" class="form-control" asp-for="taxOffice.Address" />
+                        <span class="text-danger" asp-validation-for="taxOffice.Address"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="taxOffice.Email" class="form-label">Office Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control" asp-for="taxOffice.Email" placeholder="example@mail.com">
+                        </div>
+                        <span class="text-danger" asp-validation-for="taxOffice.Email"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="taxOffice.OfficerInCharge" class="form-label">Assign Head (Optional)</label>
+                        <input class="form-control" asp-for="taxOffice.OfficerInCharge" />
+                        <span class="text-danger" asp-validation-for="taxOffice.OfficerInCharge"></span>
+                    </div>
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-success w-100">Save & Create Office</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--VIEW TAX OFFICE-->
+<div class="modal fade" id="manageOfficeModal" tabindex="-1" aria-labelledby="manageOfficeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container mt-3 d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <h5 class="modal-title" id="manageOfficeModalLabel">Manage Office</h5>
+                <p class="text-muted mb-3">Information</p>
+                <div class="border rounded p-3">
+                    <div class="row mb-2">
+                        <div class="col-4 text-muted">Office Name</div>
+                        <div class="col-8" id="name"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4 text-muted">Office Code</div>
+                        <div class="col-8" id="code"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4 text-muted">Email</div>
+                        <div class="col-8" id="email"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4 text-muted">Phone</div>
+                        <div class="col-8" id="phone"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4 text-muted">Region / LGA</div>
+                        <div class="col-8" id="lga"></div>
+                    </div>
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-4 text-muted">Status</div>
+                        <div class="col-8" id="thestatusdiv">
+                            @*<span class="badge bg-success">Active</span>
+                    <div class="form-check form-switch d-inline ms-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="statusSwitch" checked>
+                    </div>*@
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4 text-muted">Address</div>
+                        <div class="col-8" id="address"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4 text-muted">Officer</div>
+                        <div class="col-8" id="officer"></div>
+                    </div>
+                </div>
+                <div class="justify-content-start row mt-5">
+                    <div class="col-4">
+                        <button type="button" class="btn btn-primary rounded-5 w-100 btn-editdata" data-id=""><i class="fas fa-user-edit"></i></button>
+                    </div>
+                    <div class="col-4">
+                        <button id="activedeactive" type="button" class="btn  rounded-5 w-100 btn-enable-Disable" data-id=""></button>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-danger rounded-5 w-100 delete-btn" data-id=""><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+                <input id="message" type="hidden" />
+                <input id="caseId" type="hidden" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- EDIT TAX OFFICE -->
+<div class="modal fade" id="editTaxOfficeModal" tabindex="-1" aria-labelledby="editTaxOfficeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-title h3" id="editTaxOfficeModalLabel"><strong>Edit Tax Office</strong></div>
+                <small>Information</small>
+                <form method="post" asp-page-handler="Update">
+                    <div class="mb-3">
+                        <label asp-for="taxOffice2.Name" class="form-label">Office Name</label>
+                        <input type="text" class="form-control" asp-for="taxOffice2.Name" />
+                        <span class="text-danger" asp-validation-for="taxOffice2"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Code" class="form-label">Office Code</label>
+                        <input type="text" class="form-control" id="taxOffice2_code" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="taxOffice2.LgaId" class="form-label">Region / LGA</label>
+                        <select class="form-select" asp-for="taxOffice2.LgaId" asp-items="Model.ViewSelectors.Localgovernments">
+                            <option selected>Select region</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="taxOffice2.LgaId"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="taxOffice2.Phone" class="form-label">Office Phone</label>
+                        <input type="text" asp-for="taxOffice2.Phone" class="form-control input-mask" data-inputmask="'mask': '9', 'repeat': 11, 'greedy' : false" />
+                        <span class="text-danger" asp-validation-for="taxOffice2.Phone"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="taxOffice2.Address" class="form-label">Office Address</label>
+                        <input type="text" class="form-control" asp-for="taxOffice2.Address" />
+                        <span class="text-danger" asp-validation-for="taxOffice2.Address"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="taxOffice2.Email" class="form-label">Office Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control" asp-for="taxOffice2.Email" />
+                        </div>
+                        <span class="text-danger" asp-validation-for="taxOffice2.Email"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="taxOffice2.OfficerInCharge" class="form-label">Assign Head (Optional)</label>
+                        <input class="form-control" asp-for="taxOffice2.OfficerInCharge" />
+                        <span class="text-danger" asp-validation-for="taxOffice2.OfficerInCharge"></span>
+                    </div>
+                    <div class="mt-2">
+                        <input asp-for="taxOffice2.Id" type="hidden" />
+                        <button type="submit" class="btn btn-success w-100">Update Office</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/inputmask/jquery.inputmask.bundle.min.js"></script>
+    <script src="/js/taxoffices.min.js"></script>
+}

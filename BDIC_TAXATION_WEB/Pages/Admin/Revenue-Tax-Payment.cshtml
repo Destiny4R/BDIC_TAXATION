@@ -1,0 +1,203 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Revenue_Tax_PaymentModel
+@{
+    ViewData["Title"] = "Revenue Tax Payment";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">Revenue/Tax Payments</h5>
+                    <small class="text-muted">Manage all revenue & tax payments</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-plus-lg me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (TempData["success"] != null)
+            {
+                <div class="alert alert-outline-success alert-dismissible fade show mt-2 mb-2" role="alert">
+                    <strong>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <symbol id="check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                            </symbol>
+                        </svg>
+                    </strong> @TempData["success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+                    <strong>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            </symbol>
+                        </svg>
+                    </strong> @TempData["error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            <table class="table" id="revenuetable">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Player Name</th>
+                        <th>Revenue Type</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Payment Date</th>
+                        <th>BTIN/Ref No</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 20; i++)
+                    {
+                        sn++;
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Tersoo Solomon</td>
+                            <td>Business permit</td>
+                            <td>N10,000.00</td>
+                            <td><span class="badge bg-success">Paid</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>BTIN-9635584</td>
+                            <td>
+                                <button class="btn btn-light" type="button">Download</button>
+                                <button class="btn btn-light" type="button">View</button>
+                                <button class="btn btn-light" type="button"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-light" type="button"><i class="fas fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 shadow-sm">
+            <div class="modal-body p-4">
+                <h5 class="fw-bold text-dark mb-3">Filter</h5>
+
+                <!-- Nav Tabs -->
+                <ul class="nav nav-tabs nav-fill bg-light rounded-pill mb-3" id="filterTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active rounded-pill" id="dates-tab" data-bs-toggle="tab" data-bs-target="#dates" type="button" role="tab" aria-controls="dates" aria-selected="true">Dates</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill" id="statuses-tab" data-bs-toggle="tab" data-bs-target="#statuses" type="button" role="tab" aria-controls="statuses" aria-selected="false">Statuses</button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content mt-2" id="filterTabContent">
+                    <!-- Dates Tab -->
+                    <div class="tab-pane fade show active" id="dates" role="tabpanel" aria-labelledby="dates-tab">
+                        <div class="mb-3">
+                            <label class="form-label">From</label>
+                            <input type="date" class="form-control startdate">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">To</label>
+                            <input type="date" class="form-control enddate">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success">Apply</button>
+                            <button class="btn btn-light">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Statuses Tab -->
+                    <div class="tab-pane fade" id="statuses" role="tabpanel" aria-labelledby="statuses-tab">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="status" id="paid" value="Paid">
+                            <label class="form-check-label" for="paid">Paid</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="status" id="failed" value="Failed">
+                            <label class="form-check-label" for="failed">Failed</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="status" id="pending" value="Pending">
+                            <label class="form-check-label" for="pending">Pending</label>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-success">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#revenuetable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false
+            });
+        });
+        flatpickr(".startdate", {
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "F j, Y",
+        });
+
+        flatpickr(".enddate", {
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "F j, Y",
+        });
+    </script>
+}

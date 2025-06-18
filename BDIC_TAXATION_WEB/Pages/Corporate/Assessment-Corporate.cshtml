@@ -1,0 +1,304 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Corporate.Assessment_CorporateModel
+@{
+    ViewData["Title"] = "Corporate Tax Assessment";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+
+        .modal-footer button {
+            min-width: 150px;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <!-- Left: Title -->
+                <div class="col-md-4">
+                    <h5 class="mb-0 fw-semibold">Assessments</h5>
+                    <small class="text-muted">Manage all assessments</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control border-start-0" placeholder="Search">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                                <i class="bi bi-funnel me-1"></i> Filter
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-success btn-green d-flex align-items-center">
+                                Tax Calculator
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body mt-3">
+            <table class="table" id="assessmentTable">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>S/N</th>
+                        <th>Reference</th>
+                        <th>Bill Reference</th>
+                        <th>Created</th>
+                        <th>Approved Date</th>
+                        <th>Status</th>
+                        <th>Item</th>
+                        <th>Bill Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 15; i++)
+                    {
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>PZ481923KX7456AB</td>
+                            <td>REF-84213579</td>
+                            <td>@DateTime.UtcNow.AddDays(sn).ToShortDateString()</td>
+                            <td>@DateTime.UtcNow.AddDays(sn).ToShortDateString()</td>
+                            <td><span class="badge bg-success opacity-75">Approved</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" href="#" data-bs-toggle="modal" data-bs-target="#itemdetailModal">View</a>
+                            </td>
+                            <td><span class="badge bg-light text-dark opacity-75">Not Paid</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-light rounded-5" href="#" data-bs-toggle="modal" data-bs-target="#assessmentdetailsModal">Details</a>
+                                <a class="btn btn-sm btn-outline-success text-success rounded-5" href="#" data-bs-toggle="modal" data-bs-target="#generatebillerModal">Pay</a>
+                            </td>
+                        </tr>
+
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>PZ481923KX7456AB</td>
+                            <td>REF-84213579</td>
+                            <td>@DateTime.UtcNow.AddDays(sn).ToShortDateString()</td>
+                            <td>@DateTime.UtcNow.AddDays(sn).ToShortDateString()</td>
+                            <td><span class="badge bg-success opacity-75">Approved</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" href="#" data-bs-toggle="modal" data-bs-target="#itemdetailModal">View</a>
+                            </td>
+                            <td><span class="badge bg-success text-light opacity-75">Paid</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-light rounded-5" href="#" data-bs-toggle="modal" data-bs-target="#assessmentdetailsModal">Details</a>
+                                <a class="btn btn-sm btn-outline-success text-success rounded-5" href="#" data-bs-toggle="modal" data-bs-target="#generatebillerModal">Pay</a>
+                            </td>
+                        </tr>
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>PZ481923KX7456AB</td>
+                            <td>REF-84213579</td>
+                            <td>@DateTime.UtcNow.AddDays(sn).ToShortDateString()</td>
+                            <td>@DateTime.UtcNow.AddDays(sn).ToShortDateString()</td>
+                            <td><span class="badge bg-success opacity-75">Approved</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" href="#" data-bs-toggle="modal" data-bs-target="#itemdetailModal">View</a>
+                            </td>
+                            <td><span class="badge bg-light text-dark opacity-75">Not Paid</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-light rounded-5" href="#" data-bs-toggle="modal" data-bs-target="#assessmentdetailsModal">Details</a>
+                                <a class="btn btn-sm btn-outline-success text-success rounded-5" href="#" data-bs-toggle="modal" data-bs-target="#generatebillerModal">Pay</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!--Assessment Detail Summary AFTER PAYMENT-->
+<div class="modal fade" id="generatebillerModal" tabindex="-1" aria-labelledby="generatebillerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="h3 mb-2" id="generatebillerModalLabel">Assessment</div>
+                <strong>Assessment Detail Summary</strong>
+                <div class="mb-3">
+                    <div class="row gy-2">
+                        <div class="col-12 d-flex justify-content-between"><label>Assessment Reference</label> <div>PZ481923KX7456AB</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Payer ID</label> <div>B-1045897621</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Payer’s Name</label> <div>Ujah Emmanuel</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Total Taxable Income</label><br> <div>₦20,000</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Total outstanding</label><br> <div>₦0.00</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Status</label><br> <div><span class="badge badge-success">Approved</span></div></div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="agency" class="form-label">Agency</label>
+                                <select class="form-select">
+                                    <option selected>₦425,000.00</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="revenue" class="form-label">Revenue</label>
+                                <select class="form-select">
+                                    <option selected>₦425,000.00</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn w-100 btn-success">Generate Bill</button>
+                            <button class="btn w-100 btn-outline-success mt-3">Raise objection</button>
+                            <div class="alert alert-warning mt-3">
+                                <i class="bi bi-info-circle"></i>&nbsp; You only have 30 days left to raise an objection
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Assessment Detail Summary BEFORE PAYMENT-->
+<div class="modal fade" id="assessmentdetailsModal" tabindex="-1" aria-labelledby="assessmentdetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="h3 mb-2" id="assessmentdetailsModalLabel">Assessment</div>
+                <strong>Assessment Detail Summary</strong>
+                <div class="mb-3">
+                    <div class="row gy-2">
+                        <div class="col-12 d-flex justify-content-between"><label>Assessment Reference</label> <div>PZ481923KX7456AB</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Payer ID</label> <div>B-1045897621</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Payer’s Name</label> <div>Ujah Emmanuel</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Total Taxable Income</label><br> <div>₦20,000</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Total outstanding</label><br> <div>₦0.00</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Status</label><br> <div><span class="badge badge-success">Approved</span></div></div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="agency" class="form-label">Agency</label>
+                                <select class="form-select">
+                                    <option selected>Select Agency</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="revenue" class="form-label">Revenue</label>
+                                <select class="form-select">
+                                    <option selected>Select revenue</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-sm w-100 btn-success">Pay</button>
+                            <div class="alert alert-warning mt-3">
+                                <i class="bi bi-info-circle"></i>&nbsp; Objection can’t be raised 30 days after approval
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Item Details Modal-->
+<div class="modal fade" id="itemdetailModal" tabindex="-1" aria-labelledby="itemdetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="h3 text-center mb-2" id="itemdetailModalLabel">Item Details</div>
+                <strong>📊 Item Detail Summary</strong>
+                <div class="mb-3">
+                    <div class="row gy-2">
+                        <div class="col-12 d-flex justify-content-between"><label>Reference</label> <div>PZ481923KX7456AB</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Year</label> <div>2024</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Total Income</label> <div>₦20,000,000</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Payable</label><br> <div>₦20,000</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Total outstanding</label><br> <div>₦0.00</div></div>
+                        <div class="col-12  d-flex justify-content-between">
+                            <button class="btn btn-sm w-100 btn-success">Pay</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#assessmentTable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+        });
+    </script>
+}

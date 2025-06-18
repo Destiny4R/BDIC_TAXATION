@@ -1,0 +1,290 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Tax_Payer.objectionsModel
+@{
+    ViewData["Title"] = "Objections List";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        .badge-status {
+            font-size: 0.8rem;
+            padding: 0.4em 0.6em;
+            border-radius: 12px;
+        }
+
+        .table thead {
+            background-color: #f8f9fa;
+        }
+
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .drop-zone.dragover {
+            border-color: #000;
+        }
+
+        .file-details {
+            margin-top: 10px;
+        }
+
+    </style>
+}
+<div class="container">
+    <div class="row g-3 mb-4 text-center">
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-cash-coin fs-2 text-success"></i>
+                <p class="mb-0">TOTAL</p>
+                <h5>@(Model.objectionStates.Total)</h5>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-cash-coin fs-2 text-success"></i>
+                <p class="mb-0">Under Review</p>
+                <h5>@(Model.objectionStates.Review)</h5>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-cash-coin fs-2 text-success"></i>
+                <p class="mb-0">Review</p>
+                <h5>@(Model.objectionStates.Progress)</h5>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-cash-coin fs-2 text-success"></i>
+                <p class="mb-0">CLOSED</p>
+                <h5>@(Model.objectionStates.Closed)</h5>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-wallet2 fs-2 text-warning"></i>
+                <p class="mb-0">Resolved</p>
+                <h5>@(Model.objectionStates.Resolved)</h5>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Left: Title -->
+        <div class="col-md-4">
+            <h5 class="mb-0 fw-semibold">Objections</h5>
+            <small class="text-muted">Manage all objections</small>
+        </div>
+
+        <!-- Right: Controls -->
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-success btn-green d-flex align-items-center">
+                        Tax Calculator
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-2 mb-3" role="alert">
+            <strong>
+                <i class="fas fa-info"></i> &emsp;
+            </strong> @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+            <strong>
+                <i class="fas fa-warning"></i> &emsp;
+            </strong> @TempData["error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class=" mt-4">
+        <table class="table table-hover" id="objectiontable" width="100%">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Obj Reference</th>
+                    <th>Tax Audit Case Ref</th>
+                    <th>Tax Payer ID</th>
+                    <th>Amount Suggested</th>
+                    <th>Amount Requested</th>
+                    <th>Created at</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<!--Assessment Detail Summary AFTER PAYMENT-->
+<div class="modal fade" id="objectionsummaryModal" tabindex="-1" aria-labelledby="objectionsummaryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="h3 mb-2" id="objectionsummaryModalLabel">Objection summary</div>
+                <strong>General information</strong>
+                <div class="mb-3">
+                    <div class="row gy-2">
+                        <div class="col-12 d-flex justify-content-between"><label>Case Reference</label> <div id="reference"></div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Payer ID</label> <div id="payerid"></div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Year</label> <div id="session"></div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Objection Reason</label> <div id="reason"></div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Amount</label> <div id="taxamount"></div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Date Assigned</label><br> <div id="createdate"></div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Status</label><br> <div id="thestatusdiv"></div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Description</label><br /><p id="message"></p></div>
+                        <div class="h5">Documents</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="border rounded-2 row g-3" id="btn-downloadfile">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn w-100 btn-secondary mt-3">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--reason-->
+<div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="h3 mb-2" id="reasonModalLabel">Reason for cancel</div>
+
+                <div class="mb-3">
+                    <label for="reason" class="form-label">Reason</label>
+                    <textarea class="form-control" id="reason" rows="5">Message goes here...</textarea>
+                </div>
+                <div class="col-12">
+                    <button class="btn w-100 btn-success">Submit</button>
+                    <button class="btn w-100 btn-secondary mt-3">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Add Objection Modal-->
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="objectionModal" tabindex="-1"  data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="objectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="container">
+            <form id="objectionForm" method="POST" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="h3 mb-2" id="objectionsummaryModalLabel">Raise Objection</div>
+                        <!-- Objection Reason -->
+                        <div class="mb-3">
+                            <label for="objectionReason" class="form-label">Objection reason</label>
+                            <select class="form-select" id="objectionReason" name="reason" required>
+                                <option value="">Select</option>
+                                <option value="Amount discrepancy">Amount discrepancy</option>
+                                <option value="Duplicate entry">Duplicate entry</option>
+                                <option value="Previous  Ownings">Previous  Ownings</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+
+                        <!-- Suggested Amount -->
+                        <div class="mb-3">
+                            <label for="input-repeat" class="form-label">Suggested amount</label>
+                            <input id="input-repeat"  name="amount" class="form-control input-mask" data-inputmask="'mask': '9', 'repeat': 10, 'greedy' : false" required />
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Objection description</label>
+                            <textarea class="form-control" id="message" name="message" placeholder="Description..." required></textarea>
+                        </div>
+
+                        <!-- Supporting Document Dropdown -->
+                        <div class="mb-3">
+                            <label for="supportingDocType" class="form-label">Supporting document</label>
+                            <input type="text" class="form-control" id="supportingDocType" name="document_type" required />
+                        </div>
+                        <!-- Dropzone for Upload -->
+                        <div class="form-group">
+                            <label for="fileUpload">Upload supporting document</label>
+                            <div id="dropZone" class="drop-zone">
+                                <input type="file" id="hiddenFileInput" name="uploadedFile" hidden />
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="d-flex justify-content-end text-success">
+                                            <i class="mdi mdi-cloud-download-outline h1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-9">
+                                        <strong class="text-success">Click here to upload the document</strong><br />
+                                        <small class="text-muted">or drag and drop your file</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="fileDetails" class="file-details"></div>
+                        </div>
+
+                        <input type="hidden" id="incomingId" name="incomingId" value="@(Model.theid)" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Make objection</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/inputmask/jquery.inputmask.bundle.min.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/js/objectionIndivivdual.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,55 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Stationary.Local_Govnt.UpsertModel
+@{
+    ViewData["Title"] = Model.government?.Id > 0 ? "Update Government" : "Add Government";
+    string name = Model.government?.Id > 0 ? "Update" : "Save";
+}
+<div class="content container-fluid">
+    <div class="content-header-left col-md-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="col-sm-8">
+                <div>
+                    <div class="h3">
+                        <strong>@ViewData["Title"]</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4  justify-content-start d-flex justify-content-md-end">
+                <div class="">
+                    <a class="btn btn-outline-success btn-sm" asp-page="Index"><i class="fa fa-arrow-left"></i>&ensp; Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+            <strong>
+                <i class="fas fa-info"></i>
+            </strong> @TempData["error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="card">
+        <div class="card-body">
+            <form method="post" class="needs-validation">
+                <div class="form-group row">
+                    <label class="col-sm-3 font-weight-bold text-dark col-form-label form-control-label text-2">LGA Name</label>
+                    <div class="col-sm-9">
+                        <input asp-for="government.Name" class="form-control" />
+                        <span asp-validation-for="government.Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-9 offset-sm-3">
+                        <input type="submit" value="@(name)" class="btn btn-success">
+                    </div>
+                </div>
+                <input type="hidden" asp-for="government.Id" />
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{ 
+    <partial name="_ValidationScriptsPartial" />
+}

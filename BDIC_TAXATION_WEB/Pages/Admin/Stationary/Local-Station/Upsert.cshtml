@@ -1,0 +1,87 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Stationary.Local_Station.UpsertModel
+@{
+    ViewData["Title"] = Model.stationa?.Id > 0 ? "Update LG Station" : "Add Local Government Station";
+    string name = Model.stationa?.Id > 0 ? "Update" : "Save";
+}
+@section Sheets{
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+}
+<div class="content container-fluid">
+    <div class="content-header-left col-md-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="col-sm-8">
+                <div>
+                    <div class="h3">
+                        <strong>@ViewData["Title"]</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4  justify-content-start d-flex justify-content-md-end">
+                <div class="">
+                    <a class="btn btn-outline-success btn-sm" asp-page="Index"><i class="fa fa-arrow-left"></i>&ensp; Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+            <strong>
+                <i class="fas fa-info"></i>
+            </strong> @TempData["error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="card">
+        <div class="card-body">
+            <section class="container">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-5">
+                                <h2 class="text-uppercase text-center mb-5">@ViewData["Title"]</h2>
+
+                                <form method="post">
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label">Select LGA</label>
+                                        <select class="form-select lga" asp-for="stationa.LGId" asp-items="Model.ViewSelectors.Localgovernments">
+                                            <option></option>
+                                        </select>
+                                        <span asp-validation-for="stationa.LGId" class="text-danger"></span>
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label" for="form3Example3cg">Station Name</label>
+                                        <input asp-for="stationa.Name" class="form-control form-control-sm" />
+                                        <span asp-validation-for="stationa.Name" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-left">
+                                        <button type="submit" class="btn btn-success btn-block">
+                                            @name
+                                        </button>
+                                        <input asp-for="stationa.Id" type="hidden" />
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/select2/js/select2.full.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.lga').select2({
+                theme: "classic"
+            });
+        });
+    </script>
+}

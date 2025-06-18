@@ -1,0 +1,367 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Ministries.IndexModel
+@{
+    ViewData["Title"] = "List of MDAs";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">MDA Management</h5>
+                    <small class="text-muted">Manage government MDAs and the specific taxes or revenues</small><br />
+                    <small class="text-muted">each is authorized to collect under law</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-cloud-arrow-down me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-success btn-green" type="button" data-bs-toggle="modal" data-bs-target="#addmdaModal"><i class="fas fa-plus"></i> Add New MDA</button>
+            </div>
+
+        </div>
+        <div class="card-body">
+            @if (TempData["success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show mt-2 mb-2" role="alert">
+                    <strong>
+                        <i class="fas fa-info h1"></i>
+                    </strong> @TempData["success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+                    <strong>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            </symbol>
+                        </svg>
+                    </strong> @TempData["error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            <table class="table table-sm table-bordered" id="mdastable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>MDA Name</th>
+                        <th>MDA Code</th>
+                        <th>Mandated Revenues/Taxes</th>
+                        <th>Status</th>
+                        <th>Created On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                @*<tbody>
+                    @for (int i = 0; i < 15; i++)
+                    {
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Ministry of Transport</td>
+                            <td>MDA-TRN-001</td>
+                            <td>Road Taxes, Vehicle Licenses</td>
+                            <td><span class="badge bg-success opacity-75"><i class="fas fa-angle-down"></i> Active</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded-5" data-bs-toggle="modal" data-bs-target="#managemdasModal" href="#"><i class="ti-settings"></i> Manage</a>
+                            </td>
+                        </tr>
+
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Ministry of Transport</td>
+                            <td>MDA-TRN-001</td>
+                            <td>Road Taxes, Vehicle Licenses</td>
+                            <td><span class="badge bg-danger opacity-75"><i class="fas fa-angle-down"></i> Inactive</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded-5" data-bs-toggle="modal" data-bs-target="#manageposterminalModal" href="#"><i class="ti-reload"></i> Reactivate</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>*@
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--ADD NEW MDA MODEL-->
+<div class="modal fade" id="addmdaModal" tabindex="-1" aria-labelledby="addmdaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="addmdaModalLabel">Add New MDA</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <form method="post">
+                    <div class="mb-3">
+                        <label  asp-for="mdasministry.name" class="form-label">MDA Name</label>
+                        <input type="text" class="form-control"  asp-for="mdasministry.name" placeholder="Tersoo Solomon" />
+                        <span class="text-danger"  asp-validation-for="mdasministry.name"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="companyName" class="form-label">Description</label>
+                        <textarea class="form-control" rows="3" asp-for="mdasministry.description"></textarea>
+                        @*<select class="form-select" id="assignedrevenue">
+                            <option selected>Select specialization</option>
+                            <option value="tax">Tax Consulting</option>
+                            <option value="audit">Audit Services</option>
+                            <option value="legal">Legal Advisory</option>
+                        </select>*@
+                        <span class="text-danger"  asp-validation-for="mdasministry.description"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="mdasministry.email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control" asp-for="mdasministry.email" placeholder="tersoosolomon@gmail.com">
+                        </div>
+                        <span class="text-danger" asp-validation-for="mdasministry.email"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="mdasministry.establistdate" class="form-label">Date of Establishment</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <input type="text" class="form-control" asp-for="mdasministry.establistdate" placeholder="dd/mm/yy">
+                        </div>
+                        <span class="text-danger" asp-validation-for="mdasministry.establistdate"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-green w-100">Save & Assign</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--ADD NEW MDA2 MODEL-->
+<div class="modal fade" id="addmda2Modal" tabindex="-1" aria-labelledby="addmda2ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="addmda2ModalLabel">Add New MDA</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <form>
+                    <div class="mb-3">
+                        <label for="mdaName" class="form-label">MDA Name</label>
+                        <input type="text" class="form-control" id="mdaName" placeholder="Ministry of Japheth">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="companyName" class="form-label">Assigned Revenue/Tax Types</label>
+                        @*<select class="form-select" id="assignedrevenue">
+                            <option selected>Select specialization</option>
+                            <option value="tax">Tax Consulting</option>
+                            <option value="audit">Audit Services</option>
+                            <option value="legal">Legal Advisory</option>
+                        </select>*@
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <table class="table table-ms table-borderless">
+                            <tr>
+                                <td>Business permit</td>
+                                <td> <input type="checkbox" class="form-check-input" /></td>
+                            </tr>
+                            <tr>
+                                <td>Personal Income Tax, PAYE</td>
+                                <td><input type="checkbox" class="form-check-input" /></td>
+                            </tr>
+                            <tr>
+                                <td>Land Use Charge</td>
+                                <td><input type="checkbox" class="form-check-input" /></td>
+                            </tr>
+                            <tr>
+                                <td>Road Taxes, Vehicle Licenses</td>
+                                <td><input type="checkbox" class="form-check-input" /></td>
+                            </tr>
+                        </table>
+                        <div class="row mt-2 g-2">
+                            <div class="col-6">
+                                <button class="btn btn-light w-100" type="button">Clear</button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-success w-100" type="button">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="consultantEmail" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control" id="consultantEmail" placeholder="tersoosolomon@gmail.com">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="activationDate" class="form-label">Date of Establishment</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <input type="text" class="form-control" id="establishdate" placeholder="dd/mm/yy">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-green w-100">Save & Assign</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--MANAGE MDA2 MODEL-->
+<div class="modal fade" id="managemdasModal" tabindex="-1" aria-labelledby="managemdasModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="managemdasModalLabel">Manage MDA</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <form>
+                    <div class="mb-3">
+                        <table class="table table-ms table-borderless">
+                            <tr>
+                                <td>MDA Name</td>
+                                <td>Ministry of Transport</td>
+                            </tr>
+                            <tr>
+                                <td>MDA Code</td>
+                                <td>MDA-REV-009</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="badge bg-success opacity-75">Active</span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input form-check-success" type="checkbox" role="switch" checked>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Revenue/Tax Assignment list</strong>
+                    </div>
+                    <div class="mb-3">
+                        <table class="table table-ms table-borderless">
+                            <tr>
+                                <th>Revenue Type</th>
+                                <th>Status</th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>Personal Income Tax, PAYE</td>
+                                <td><span class="badge bg-success opacity-75">Active</span></td>
+                                <td>
+                                    <span class="badge bg-danger opacity-75">Deactivate</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Personal Income Tax, PAYE</td>
+                                <td>
+                                    <span class="badge bg-success opacity-75">Active</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-danger opacity-75">Deactivate</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row mt-2 g-2">
+                        <div class="col-4">
+                            <button class="btn btn-success w-100" type="button">Save</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-light w-100" type="button">Deactivate</button>
+                        </div>
+                        <div class="col-4">
+                            <button data-bs-toggle="modal" data-bs-target="#addmda2Modal" class="btn btn-light w-100" type="button">Edit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#mdastable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+            flatpickr("#mdasministry_establistdate", {
+                dateFormat: "Y-m-d",
+                allowInput: true,
+                defaultDate: new Date()
+            });
+        });
+
+
+    </script>
+}

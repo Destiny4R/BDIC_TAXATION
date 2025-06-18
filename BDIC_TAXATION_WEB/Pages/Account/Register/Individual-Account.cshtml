@@ -1,0 +1,161 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Account.Register.Individual_AccountModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tax Account Creation</title>
+    <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f9ff;
+        }
+
+        .form-container {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .form-control::placeholder {
+            color: #bbb;
+        }
+
+        .form-check-label a {
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            background-color: #97bfa3;
+            border: none;
+        }
+
+            .btn-submit:hover {
+                background-color: #85ac93;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="text-center mb-4">
+            <img src="/images/logo-dashboard.png" alt="BDiC Logo" height="50">
+            <h3 class="mt-2 text-success fw-bold">
+                INTEGRATED TAX & REVENUE<br>COLLECTION MANAGEMENT SYSTEM
+            </h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="form-container">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold">Individual Tax Payer Account Creation</h5>
+                    </div>
+                    <p class="text-muted">Create an account by providing the details below</p>
+                    <form method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Surname</label>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                                <input type="text" class="form-control" asp-for="individual.Surname" placeholder="Surname" />
+                            </div>
+                            <span asp-validation-for="individual.Surname" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">First Name</label>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                                <input type="text" class="form-control" asp-for="individual.FirstName" placeholder="First Name" />
+                            </div>
+                            <span asp-validation-for="individual.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Middle Name</label>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                                <input type="text" class="form-control" asp-for="individual.OtherName" placeholder="Middle Name">
+                            </div>
+                            <span asp-validation-for="individual.OtherName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" asp-for="individual.Email" placeholder="email address">
+                            </div>
+                            <span asp-validation-for="individual.Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="tel" asp-for="individual.Phone" class="form-control" placeholder="Phone">
+                            </div>
+                            <span asp-validation-for="individual.Phone" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">NIN</label>
+                            <div class="position-relative">
+                                <i class="bi bi-123 position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                                <input class="form-control ps-5" asp-for="individual.NationalIdentificationNumber" placeholder="000 000 000 0" />
+                            </div>
+                            @*<input type="text" class="form-control" asp-for="individual.NationalIdentificationNumber" placeholder="000 000 000 0">*@
+                            <span asp-validation-for="individual.NationalIdentificationNumber" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="individual.Password" >Password</label>
+                            <div class="position-relative">
+                                <i class="bi bi-lock position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                                <i class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-3 closeopen"></i>
+                                <input asp-for="individual.Password" class="form-control ps-5 pe-5" />
+                            </div>
+                            <span asp-validation-for="individual.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" asp-for="individual.Agree" type="checkbox" required />
+                            <label class="form-check-label" asp-for="individual.Agree">
+                                By creating an account you agree to the
+                                <a href="#">Terms & Conditions</a> and our
+                                <a href="#">Privacy Policy</a>
+                            </label>
+                            <span asp-validation-for="individual.Agree" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 mt-3 text-white">Create account</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <small>Already have an account? <a asp-page="/Account/Login" class="text-success">Log In</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/js/bootstrap.bundle.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelector("form").addEventListener("submit", function (e) {
+            var checkbox = document.querySelector("#individual_Agree");
+            if (!checkbox.checked) {
+                $(this).validate().element(checkbox);
+                e.preventDefault();
+            }
+        });
+        $(document).ready(function () {
+            $('.closeopen').on('click', function () {
+                $(this).toggleClass('bi-eye bi-eye-slash');
+                const input = $(this).siblings('input');
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                } else {
+                    input.attr('type', 'password');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

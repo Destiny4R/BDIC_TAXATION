@@ -1,0 +1,18 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Tax_Payer.Message_PaymentModel
+@{
+    ViewData["Title"] = "Payment Message";
+}
+<div class="container">
+    @if (Model.message)
+    {
+        <center><h1 class="text-success">Payment Successful</h1></center>
+        <div class="p-5">
+            <img src="~/images/Image_fx.jpg" width="1005" class="rounded-3 img-fluid" />
+        </div>
+    }
+    else
+    {
+        <center><h1 class="text-danger">Payment Failed</h1></center>
+    }
+</div>

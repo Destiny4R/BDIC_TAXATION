@@ -1,0 +1,265 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Corporate.ObjectionsModel
+@{
+    ViewData["Title"] = "Corporate Tax Assessment";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .badge-status {
+            font-size: 0.8rem;
+            padding: 0.4em 0.6em;
+            border-radius: 12px;
+        }
+
+        .table thead {
+            background-color: #f8f9fa;
+        }
+    </style>
+}
+<div class="container">
+    <div class="row g-3 mb-4 text-center">
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-cash-coin fs-2 text-success"></i>
+                <p class="mb-0">TOTAL</p>
+                <h5>2</h5>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-cash-coin fs-2 text-success"></i>
+                <p class="mb-0">ACTIVE</p>
+                <h5>2</h5>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-cash-coin fs-2 text-success"></i>
+                <p class="mb-0">CANCELED</p>
+                <h5>2</h5>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-cash-coin fs-2 text-success"></i>
+                <p class="mb-0">CLOSED</p>
+                <h5>2</h5>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card p-3">
+                <i class="bi bi-wallet2 fs-2 text-primary"></i>
+                <p class="mb-0">FLAGGED FOR LEGAL</p>
+                <h5>2</h5>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Left: Title -->
+        <div class="col-md-4">
+            <h5 class="mb-0 fw-semibold">Objections</h5>
+            <small class="text-muted">Manage all objections</small>
+        </div>
+
+        <!-- Right: Controls -->
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-success btn-green d-flex align-items-center">
+                        Tax Calculator
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-hover" id="objectiontable">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Obj Reference</th>
+                    <th>Tax Audit Case Ref</th>
+                    <th>Tax Payer ID</th>
+                    <th>Amount Suggested</th>
+                    <th>Amount Requested</th>
+                    <th>Created at</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < 15; i++)
+                {
+                    sn++;
+
+                    <tr>
+                        <td>@(sn)</td>
+                        <td>PZ481923KX7456AB</td>
+                        <td>N/A</td>
+                        <td>B-9876543210</td>
+                        <td>₦250,000</td>
+                        <td>₦250,000</td>
+                        <td>@(DateTime.UtcNow.ToShortDateString()) </td>
+                        <td><span class="badge bg-danger badge-status">Flagged by legal</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary" data-bs-target="#objectionsummaryModal" data-bs-toggle="modal"><i class="bi bi-eye"></i> View</button>
+                        </td>
+                    </tr>
+
+                    sn++;
+                    <tr>
+                        <td>@(sn)</td>
+                        <td>PZ481923KX7456AB</td>
+                        <td>N/A</td>
+                        <td>B-9876543210</td>
+                        <td>₦250,000</td>
+                        <td>₦250,000</td>
+                        <td>@(DateTime.UtcNow.ToShortDateString())  @(DateTime.UtcNow.ToShortTimeString())</td>
+                        <td><span class="badge badge-success">Active</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary" data-bs-target="#reasonModal" data-bs-toggle="modal"><i class="bi bi-x"></i> Cancel</button>
+                        </td>
+                    </tr>
+                    sn++;
+
+                    <tr>
+                        <td>@(sn)</td>
+                        <td>PZ481923KX7456AB</td>
+                        <td>N/A</td>
+                        <td>B-9876543210</td>
+                        <td>₦250,000</td>
+                        <td>₦250,000</td>
+                        <td>@(DateTime.UtcNow.ToShortDateString())  @(DateTime.UtcNow.ToShortTimeString())</td>
+                        <td><span class="badge badge-secondary">Closed</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary" data-bs-target="#objectionsummaryModal" data-bs-toggle="modal"><i class="bi bi-eye"></i> View</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--Assessment Detail Summary AFTER PAYMENT-->
+<div class="modal fade" id="objectionsummaryModal" tabindex="-1" aria-labelledby="objectionsummaryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="h3 mb-2" id="objectionsummaryModalLabel">Objection summary</div>
+                <strong>General information</strong>
+                <div class="mb-3">
+                    <div class="row gy-2">
+                        <div class="col-12 d-flex justify-content-between"><label>Case Reference</label> <div>PZ481923KX7456AB</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Payer ID</label> <div>B-1045897621</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Title</label> <div>2024 Price Discripancy</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Summary</label><br> <div>Summary goes here.....</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Date Assigned</label><br> <div>@(DateTime.UtcNow.ToShortDateString())  @(DateTime.UtcNow.ToShortTimeString())</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Status</label><br> <div><span class="badge badge-success">Completed</span></div></div>
+                        <div class="h5">Documents</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <div class="border rounded-2 row g-3">
+                                <div class="col-10">
+                                    <i class="bi bi-file-earmark-pdf fs-1 text-danger"></i>
+                                    <p class="small mb-1">document.png</p>
+                                </div>
+                                <button class="btn btn-sm btn-light col-2"><i class="dripicons-download"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="border rounded-2 row g-3">
+                                <div class="col-10">
+                                    <i class="bi bi-file-earmark-pdf fs-1 text-danger"></i>
+                                    <p class="small mb-1">document.png</p>
+                                </div>
+                                <button class="btn btn-sm btn-light col-2"><i class="dripicons-download"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="border rounded-2 row g-3">
+                                <div class="col-10">
+                                    <i class="bi bi-file-earmark-pdf fs-1 text-danger"></i>
+                                    <p class="small mb-1">document.png</p>
+                                </div>
+                                <button class="btn btn-sm btn-light col-2"><i class="dripicons-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn w-100 btn-secondary mt-3">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--reason-->
+<div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="h3 mb-2" id="reasonModalLabel">Reason for cancel</div>
+
+                <div class="mb-3">
+                    <label for="reason" class="form-label">Reason</label>
+                    <textarea class="form-control" id="reason" rows="5">Message goes here...</textarea>
+                </div>
+                <div class="col-12">
+                    <button class="btn w-100 btn-success">Submit</button>
+                    <button class="btn w-100 btn-secondary mt-3">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Item Details Modal-->
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#objectiontable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+        });
+    </script>
+}

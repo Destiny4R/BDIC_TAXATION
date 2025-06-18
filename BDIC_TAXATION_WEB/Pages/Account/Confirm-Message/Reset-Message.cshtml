@@ -1,0 +1,96 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Account.Confirm_Message.Reset_MessageModel
+@{
+    ViewData["Title"] = "";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BDIC Reset Password</title>
+    <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            margin-top: 100px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .forgot-link {
+            font-size: 0.85rem;
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="mb-5 d-flex justify-content-center">
+                    <img src="~/images/Frame 709.svg" />
+                </div>
+                <h4 class="login-title">Reset password link Sent</h4>
+                <small class="login-subtitle">We have sent a password reset link to </small>
+                <small><strong>youremail@gmail.com</strong> click to reset your password</small>
+            </div>
+
+            <div class="mt-5">
+                <a asp-page="/Account/Login" class="btn btn-success btn-lg w-100">Back to Login Page</a>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+
+

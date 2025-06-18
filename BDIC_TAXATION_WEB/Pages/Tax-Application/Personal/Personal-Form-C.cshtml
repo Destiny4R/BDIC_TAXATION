@@ -1,0 +1,61 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Tax_Application.Personal.Personal_Form_CModel
+@{
+    ViewData["Title"] = "Personal Income Tax Returns Form 'C'";
+}
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="offset-md-3 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title">@ViewData["Title"].ToString().ToUpper()</h1>
+                    <p>Income</p>
+                </div>
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-horizontal">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="text-bold-600 font-medium-2">
+                                            Select Ministry
+                                        </div>
+                                        <p>Select the Ministry you wish to remit to...</p>
+                                        <div class="form-group">
+                                            <select class="select2-theme form-control" id="select2-theme">
+                                                <option value="romboid">Ministry of Food</option>
+                                                <option value="trapeze">Ministry of Kiss</option>
+                                                <option value="triangle">Ministry of Boss</option>
+                                                <option value="polygon">Ministry of Good</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="text-bold-600 font-medium-2">
+                                            Renenue Item
+                                        </div>
+                                        <p>Select the revenue item you wish to pay</p>
+                                        <div class="form-group">
+                                            <select class="select2-theme1 form-control" id="select2-theme1">
+                                                <option value="romboid">Corporate tax</option>
+                                                <option value="trapeze">VAT</option>
+                                                <option value="triangle">Business permit</option>
+                                                <option value="polygon">Land use charge</option>
+                                                <option>Trade permit</option>
+                                                <option>Levies</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 center">
+                                        <input type="hidden" />
+                                        <button type="submit" class="btn text-white mr-1 mb-1 block" style="background-color:green;">Proceed to pay</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

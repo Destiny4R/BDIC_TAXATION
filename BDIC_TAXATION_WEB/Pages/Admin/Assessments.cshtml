@@ -1,0 +1,198 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.AssessmentsModel
+@{
+    ViewData["Title"] = "Annual Returns";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">Assessments</h5>
+                    <small class="text-muted">Manage Assessments</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-cloud-arrow-down me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table" id="assessmentTable">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Payer Name</th>
+                        <th>BTIN/Entity ID</th>
+                        <th>Tax Year</th>
+                        <th>Year(Period)</th>
+                        <th>Filed On</th>
+                        <th>Amount Declared</th>
+                        <th>Tax Due</th>
+                        <th>Status</th>
+                        <th>More</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="assessmentDetailsModal" tabindex="-1" aria-labelledby="assessmentDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="w-100 text-center">
+                    <h5 class="modal-title" id="assessmentDetailsModalLabel">Assessment Details</h5>
+                    <small class="text-muted">Review the tax return details</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 p-3 border rounded">
+                    <div class="row mb-2">
+                        <div class="col-sm-6"><strong>Return for:</strong> <label id="name"></label></div>
+                        <div class="col-sm-6"><strong>Tax Type:</strong> <label id="assetname"></label></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-6"><strong>BTIN:</strong> <label id="username"></label></div>
+                        <div class="col-sm-6"><strong>Date:</strong> <label id="createdate"></label></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-6"><strong>Phone:</strong> <label id="phone"></label></div>
+                        <div class="col-sm-6"><strong>Tax Year:</strong> <label id="session"></label></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-6" id="divmessage"></div>
+                    </div>
+                </div>
+
+                <h6 class="mt-3">Assessment</h6>
+                <div class="p-3 border rounded mb-3">
+                    <div class="row mb-2">
+                        <div class="col-sm-6 col-md-3"><strong>Declared Revenue:</strong><br> <label id="income"></label></div>
+                        <div class="col-sm-6 col-md-3"><strong>Deductions:</strong><br> <label id="leftamount"></label></div>
+                        <div class="col-sm-6 col-md-3"><strong>Tax Assessed:</strong><br> <label id="taxamount"></label></div>
+                        <div class="col-sm-6 col-md-3"><strong>Outstanding:</strong><br> ₦0</div>
+                    </div>
+                </div>
+
+                <h6 class="mt-3">Supporting documents</h6>
+                <div class="row g-5 mb-3">
+                    <div class="col-6 col-md-3">
+                        <div class="border rounded row p-2 text-center bg-light">
+                            <div class="col-8">
+                                <i class="bi bi-file-earmark-pdf fs-1 text-danger"></i>
+                                <p class="small mb-1" id="docu-name"></p>
+                            </div>
+                            <div class="col-4" id="div-download"></div>
+                        </div>
+                    </div>
+                    @*<div class="col-6 col-md-3">
+                        <div class="border rounded row p-2 text-center bg-light">
+                            <div class="col-10">
+                                <i class="bi bi-file-earmark-pdf fs-1 text-danger"></i>
+                                <p class="small mb-1">document.png</p>
+                            </div>
+                            <button class="btn btn-sm btn-light col-2"><i class="dripicons-download"></i></button>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+
+            <div class="modal-footer d-flex flex-column flex-md-row justify-content-between">
+                <div class="d-flex gap-2 w-100 w-md-auto mb-5 mb-md-0">
+                    <button type="button" class="btn w-100 btn-approv"> </button>
+                </div>
+                <a href="#" class="small text-decoration-underline" data-bs-toggle="modal" data-bs-target="#additionalinfoModal">Request Additional Information</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="additionalinfoModal" tabindex="-1" aria-labelledby="additionalinfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-title h3" id="additionalinfoModalLabel"><strong>Request Additional Information</strong></div>
+                <div class="mb-3 mt-3">
+                    <label for="disabledTextInput" class="form-label">Additional Information</label>
+                    <textarea type="text" id="disabledTextInput" rows="8" class="form-control" placeholder="We need more information about your tax deductions..">
+                    
+                    </textarea>
+                    <div class="d-flex gap-2 w-100 w-md-auto mb-5 mb-md-0 mt-3">
+                        <button type="button" class="btn btn-success w-100">Send</button>
+                        <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/js/assessment.min.js"></script>
+    <script>
+        //$(document).ready(function () {
+        //    $('#assessmentTable').DataTable({
+        //        "paging": true,
+        //        "info": true,
+        //        "serverSide": false,
+        //        "lengthChange": false, // Hides the "Show X entries" dropdown
+        //        "searching": false,
+        //        responsive: true
+        //    });
+        //});
+    </script>
+}

@@ -1,0 +1,112 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Report_Manager.IndexModel
+@{
+    ViewData["Title"] = "Reports Center";
+}
+@section Sheets{ 
+
+}
+<div class="container">
+    <h2 class="mb-2">Reports Center</h2>
+    <p class="text-muted mb-4">A centralized hub for generating and downloading detailed reports filtered by time, status, entities, and more</p>
+    <div class="container text-center">
+        <div class="row g-4">
+            <div class="col-md-5">
+                <div class="p-3 border bg-light rounded-3">
+                    <a asp-page="Taxpayer-Reports" class="report-link">
+                        <div class="row rounded-3 border-3">
+                            <div class="col-2">
+                                <span class="h1">📄</span>
+                            </div>
+                            <div class="col-8 text-dark">Taxpayer Reports <span>➔</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="p-3 border bg-light rounded-3">
+                    <a asp-page="Revenue-Report" class="report-link">
+                        <div class="row rounded-3 border-3">
+                            <div class="col-2">
+                                <span class="h1">📄</span>
+                            </div>
+                            <div class="col-8 text-dark">Revenue/Tax Payment Reports <span>➔</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="p-3 border bg-light rounded-3">
+                    <a asp-page="Objection-Reports" class="report-link">
+                        <div class="row rounded-3 border-3">
+                            <div class="col-2">
+                                <span class="h1">📄</span>
+                            </div>
+                            <div class="col-8 text-dark">Objection Reports <span>➔</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="p-3 border bg-light rounded-3">
+                    <a asp-page="Pos-Terminal-Reports" class="report-link">
+                        <div class="row rounded-3 border-3">
+                            <div class="col-2">
+                                <span class="h1">📄</span>
+                            </div>
+                            <div class="col-8 text-dark">POS Terminal Reports <span>➔</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="p-3 border bg-light rounded-3">
+                    <a asp-page="Annual-Returns-Report" class="report-link">
+                        <div class="row rounded-3 border-3">
+                            <div class="col-2">
+                                <span class="h1">📄</span>
+                            </div>
+                            <div class="col-8 text-dark">Annual Return Reports <span>➔</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="p-3 border bg-light rounded-3">
+                    <a asp-page="Assessment-Report" class="report-link">
+                        <div class="row rounded-3 border-3">
+                            <div class="col-2">
+                                <span class="h1">📄</span>
+                            </div>
+                            <div class="col-8 text-dark">Assessment Report <span>➔</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="p-3 border bg-light rounded-3">
+                    <a asp-page="Collection-Agent-Reports" class="report-link">
+                        <div class="row rounded-3 border-3">
+                            <div class="col-2">
+                                <span class="h1">📄</span>
+                            </div>
+                            <div class="col-8 text-dark">Collection Reports <span>➔</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="p-3 border bg-light rounded-3">
+                    <a href="#" class="report-link">
+                        <div class="row rounded-3 border-3">
+                            <div class="col-2">
+                                <span class="h1">📄</span>
+                            </div>
+                            <div class="col-8 text-dark">Consultants Reports <span>➔</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

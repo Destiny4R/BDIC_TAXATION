@@ -1,0 +1,206 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.ObjectionsModel
+@{
+    ViewData["Title"] = "Annual Returns";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">Objections</h5>
+                    <small class="text-muted">Manage Objections</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-cloud-arrow-down me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table " id="objectionTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Player Name</th>
+                        <th>Case ID</th>
+                        <th>BTIN/Entity ID</th>
+                        <th>Objection Type</th>
+                        <th>Tax Period</th>
+                        <th>Submitted Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="objectionDetailModal" tabindex="-1" aria-labelledby="objectionDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="w-100 text-center">
+                    <h5 class="modal-title" id="objectionDetailModalLabel">Objection Detail</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3 p-3 border rounded">
+                    <div class="row mb-2">
+                        <div class="col-sm-12 d-flex justify-content-between"><strong>Case Reference:</strong> <div id="reference"></div></div>
+                        <div class="col-sm-12 d-flex justify-content-between"><strong>Tax Payer ID:</strong> <div id="payerid"></div></div>
+                        <div class="col-sm-12 d-flex justify-content-between"><strong>Objection Type:</strong> <div id="objectiontype"></div></div>
+                        <div class="col-sm-12 d-flex justify-content-between"><strong>Submitted On:</strong> <div id="createdate"></div></div>
+                        <div class="col-sm-12 d-flex justify-content-between"><strong>Status:</strong> <div id="labeliconDiv"></div></div>
+                    </div>
+                </div>
+
+                <h6 class="mt-3">Supporting document</h6>
+                <div class="row g-3 mb-3">
+                    <div class="col-12">
+                        <div id="downloadContainer" class="border rounded row p-2 text-center bg-light">
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="mt-3">Objection description</h6>
+                <p id="message" ></p>
+            </div>
+
+            <div class="modal-footer d-flex flex-column flex-md-row justify-content-between">
+                <div id="btn-Div" class="d-flex gap-2 w-100 w-md-auto mb-5 mb-md-0">
+                    <button type="button" data-id="dx.id" class="btn btn-success w-100">Resolve</button>
+                    <button type="button" data-id="dx.id" class="btn btn-outline-danger w-100">Reject Observation</button>
+                </div>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#requestinformationModal" class="small text-decoration-underline">Request Additional Information</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---RESOLVE MODAL-->
+<div class="modal fade" id="resolveremarkModal" tabindex="-1" aria-labelledby="resolveremarkModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-title h3" id="resolveremarkModalLabel"><strong>Resolve with Remarks</strong></div>
+                <div class="mb-3 mt-3">
+                    <form  id="resolveform">
+                        <label for="disabledTextInput" class="form-label">Remark</label>
+                        <textarea type="text" id="remark" rows="8" class="form-control" maxlength="1000" required placeholder="Remark messag here...."></textarea>
+                        <input type="hidden" name="resoiveid" id="resoiveid" />
+                        <div class="d-flex gap-2 w-100 w-md-auto mb-5 mb-md-0 mt-3">
+                            <button type="button" class="btn btn-success w-100 btn-submitresolve">Confirm Resolve</button>
+                            <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---REJECT MODAL-->
+<div class="modal fade" id="rejectremarkModal" tabindex="-1" aria-labelledby="rejectremarkModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-title h3" id="rejectremarkModalLabel"><strong>Reject Objection</strong></div>
+                <div class="mb-3 mt-3">
+                    <label for="disabledTextInput" class="form-label">Reason</label>
+                    <textarea type="text" id="disabledTextInput" rows="8" maxlength="1000" class="form-control" placeholder="Reason for rejecting object...."></textarea>
+                    <input type="hidden" name="rejectid" id="rejectid" />
+                    <div class="d-flex gap-2 w-100 w-md-auto mb-5 mb-md-0 mt-3">
+                        <button type="button" class="btn btn-success btn-rejectaction w-100">Reject</button>
+                        <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---REQUEST ADDITIONAL INFORMATION MODAL-->
+<div class="modal fade" id="requestinformationModal" tabindex="-1" aria-labelledby="requestinformationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-title h3" id="requestinformationModalLabel"><strong>Request Additional Information</strong></div>
+                <div class="mb-3 mt-3">
+                    <label for="disabledTextInput" class="form-label">Additional Information</label>
+                    <textarea type="text" id="disabledTextInput" rows="8" class="form-control" placeholder="We need more information about your tax deductions....">
+                    
+                    </textarea>
+                    <div class="d-flex gap-2 w-100 w-md-auto mb-5 mb-md-0 mt-3">
+                        <button type="button" class="btn btn-success w-100">Send</button>
+                        <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/js/objectionheads.min.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,345 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Tax_Payer.Account_SettingsModel
+@{
+    ViewData["Title"] = "Account Settings";
+}
+<!--Add Sheets render and add sweetalert2 css-->
+@section Sheets{
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .icon-input-container {
+            position: relative;
+        }
+
+            .icon-input-container i {
+                position: absolute;
+                top: 50%;
+                left: 10px;
+                transform: translateY(-50%);
+                color: #6c757d; /* Bootstrap text-muted color */
+            }
+
+            .icon-input-container .form-control {
+                padding-left: 35px; /* Adjust padding to accommodate the icon */
+            }
+    </style>
+}
+<div class="container ">
+    <h4>Settings</h4>
+    <p class="text-muted">Manage your account settings</p>
+
+    <ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                    type="button" role="tab">
+                Profile
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="business-tab" data-bs-toggle="tab" data-bs-target="#business"
+                    type="button" role="tab">
+                Business Information
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password"
+                    type="button" role="tab">
+                Change Password
+            </button>
+        </li>
+    </ul>
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mt-2 mb-3" role="alert">
+            <strong>
+                <i class="fas fa-info"></i> &emsp;
+            </strong> @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+            <strong>
+                <i class="fas fa-warning"></i> &emsp;
+            </strong> @TempData["error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="tab-content">
+        <!-- Profile Tab -->
+        <div class="tab-pane fade show active" id="profile" role="tabpanel">
+            <div class="row col-md-8">
+                <div class="card p-4">
+                    <h5>Account Settings</h5>
+                    <p class="text-muted">Profile Information</p>
+
+                    <div class="mb-3 text-center">
+                        <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            TS
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-secondary btn-sm mt-2">Update Image</button>
+                            <p class="text-muted small">Recommended 400 x 400 in jpg or PNG format</p>
+                        </div>
+                    </div>
+                    <form method="post" asp-page-handler="BusinessProfile">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.Surname"></label>
+                                    <input asp-for="individual.Surname" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.Surname" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.OtherName"></label>
+                                    <input asp-for="individual.OtherName" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.OtherName" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.FirstName"></label>
+                                    <input asp-for="individual.FirstName" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label asp-for="individual.Gender" class="form-label">Gender</label>
+                                    <select class="form-select" asp-for="individual.Gender">
+                                        <option value="" selected disabled>Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.Phone"></label>
+                                    <input asp-for="individual.Phone" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.Phone" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.NIN"></label>
+                                    <input asp-for="individual.NIN" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.NIN" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.TaxNumber"></label>
+                                    <input asp-for="individual.TaxNumber" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.TaxNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.Email"></label>
+                                    <input asp-for="individual.Email" class="form-control" readonly disabled />
+                                </div>
+                                <span asp-validation-for="individual.Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.Address"></label>
+                                    <input asp-for="individual.Address" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.Address" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.DateofBirth"></label>
+                                    <input type="text" asp-for="individual.DateofBirth" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.DateofBirth" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.Occupation"></label>
+                                    <input asp-for="individual.Occupation" class="form-control" />
+                                </div>
+                                <span asp-validation-for="individual.Occupation" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="individual.LGA"></label>
+                                    <select class="custom-select" asp-for="individual.LGA">
+                                        <option value="" disabled selected>Select LGA</option>
+                                        <option value="agbado">Agatu</option>
+                                        <option value="apa">Apa</option>
+                                        <option value="adoka">Ado</option>
+                                        <option value="buruku">Buruku</option>
+                                        <option value="gboko">Gboko</option>
+                                        <option value="guma">Guma</option>
+                                        <option value="gwer_east">Gwer East</option>
+                                        <option value="gwer_west">Gwer West</option>
+                                        <option value="kastina_ala">Katsina-Ala</option>
+                                        <option value="konshisha">Konshisha</option>
+                                        <option value="kwande">Kwande</option>
+                                        <option value="logo">Logo</option>
+                                        <option value="makurdi">Makurdi</option>
+                                        <option value="obi">Obi</option>
+                                        <option value="oguukolo">Ogbadibo</option>
+                                        <option value="ohimini">Ohimini</option>
+                                        <option value="oju">Oju</option>
+                                        <option value="okpokwu">Okpokwu</option>
+                                        <option value="otukpo">Otukpo</option>
+                                        <option value="tarka">Tarka</option>
+                                        <option value="ukum">Ukum</option>
+                                        <option value="ushongo">Ushongo</option>
+                                        <option value="vandeikya">Vandeikya</option>
+                                    </select>
+
+                                </div>
+                                <span asp-validation-for="individual.LGA" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-12">
+                                <input asp-for="individual.Id" type="hidden"/>
+                                <button class="btn btn-success w-50" type="submit">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Information Tab -->
+        <div class="tab-pane fade" id="business" role="tabpanel">
+            <div class="row col-md-6">
+                <div class="card p-4">
+                    <h5>Account Settings</h5>
+                    <p class="text-muted">Business Information</p>
+
+                    <form method="post" asp-page-handler="BusinessInfo">
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="individualbusiness.BusinessName"></label>
+                            <input asp-for="individualbusiness.BusinessName" class="form-control" />
+                            <span class="text-danger" asp-validation-for="individualbusiness.BusinessName"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="individualbusiness.BusinessType"></label>
+                            <input asp-for="individualbusiness.BusinessType" class="form-control" />
+                            <span class="text-danger" asp-validation-for="individualbusiness.BusinessType"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="individualbusiness.IndustrySector"></label>
+                            <select class="custom-select" asp-for="individualbusiness.IndustrySector">
+                                <option value="" disabled selected>Select industry</option>
+                                <option value="agriculture">Agriculture</option>
+                                <option value="automotive">Automotive</option>
+                                <option value="banking_finance">Banking & Finance</option>
+                                <option value="construction">Construction</option>
+                                <option value="consulting">Consulting</option>
+                                <option value="consumer_goods">Consumer Goods</option>
+                                <option value="education">Education</option>
+                                <option value="energy">Energy</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="food_beverage">Food & Beverage</option>
+                                <option value="government">Government</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="hospitality">Hospitality</option>
+                                <option value="ict">Information & Communication Technology (ICT)</option>
+                                <option value="legal_services">Legal Services</option>
+                                <option value="logistics_transportation">Logistics & Transportation</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="media">Media</option>
+                                <option value="mining">Mining</option>
+                                <option value="non_profit">Non-profit / NGO</option>
+                                <option value="oil_gas">Oil & Gas</option>
+                                <option value="pharmaceuticals">Pharmaceuticals</option>
+                                <option value="real_estate">Real Estate</option>
+                                <option value="retail">Retail</option>
+                                <option value="security">Security</option>
+                                <option value="sports">Sports</option>
+                                <option value="telecommunications">Telecommunications</option>
+                                <option value="textile">Textile</option>
+                                <option value="tourism">Tourism</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="wholesale">Wholesale</option>
+                            </select>
+                            <span asp-validation-for="individualbusiness.IndustrySector" class="text-danger"></span>
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="individualbusiness.Address"></label>
+                            <input asp-for="individualbusiness.Address" class="form-control" />
+                            <span class="text-danger" asp-validation-for="individualbusiness.Address"></span>
+                        </div>
+                        <input asp-for="individualbusiness.Id" type="hidden" />
+                        <button class="btn btn-success w-100">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Password Tab -->
+        <div class="tab-pane fade" id="password" role="tabpanel">
+            <div class="row col-md-6">
+                <div class="card p-4">
+                    <h5>Account Settings</h5>
+                    <p class="text-muted">Change password</p>
+
+                    <form method="post" asp-page-handler="ChangePassword">
+                        <div class="mb-3">
+                            <label class="form-label">Current Password</label>
+                            <div class="input-group">
+                                <input asp-for="Change.OldPassword" class="form-control" placeholder="*************">
+                                <span class="input-group-text"><i class="bi bi-eye"></i></span>
+                            </div>
+                            <span class="text-danger" asp-validation-for="Change.OldPassword"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input asp-for="Change.NewPassword" class="form-control" placeholder="*************">
+                                <span class="input-group-text"><i class="bi bi-eye"></i></span>
+                            </div>
+                            <span class="text-danger" asp-validation-for="Change.NewPassword"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <input asp-for="Change.ConfirmPassword" class="form-control" placeholder="*************">
+                                <span class="input-group-text"><i class="bi bi-eye"></i></span>
+                            </div>
+                            <span class="text-danger" asp-validation-for="Change.ConfirmPassword"></span>
+                        </div>
+                        <div class="text-danger mb-3" asp-validation-summary="All"></div>
+                        <button class="btn btn-success w-100" type="submit">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#successBtn").click(function () {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Your action was completed successfully.",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+            });
+
+            // Initialize Flatpickr for date input
+            flatpickr("#individual_DateofBirth", {
+                dateFormat: "Y-m-d",
+                allowInput: true
+            });
+        });
+    </script>
+}

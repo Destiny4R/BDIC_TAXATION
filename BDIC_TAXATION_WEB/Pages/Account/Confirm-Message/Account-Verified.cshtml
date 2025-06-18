@@ -1,0 +1,93 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Account.Confirm_Message.Account_VerifiedModel
+@{
+    Layout = null;
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account Created || BDIC</title>
+
+    <link href="~/images/logos/favicon.ico" rel="icon" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .text-color {
+            color: darkgreen;
+            text-decoration-color: white;
+        }
+
+        .bgcolor {
+            background-color: darkgreen;
+            color: white;
+        }
+
+        .text-color1 {
+            color: #2c3e50; /* Dark blue-gray - change as needed */
+        }
+
+        .bgcolor1 {
+            background-color: #3498db; /* Nice blue - change as needed */
+            color: white;
+        }
+
+        .responsive-card {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        /* Ensure image is responsive */
+        .card img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4 px-3 px-sm-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <!-- Your card with responsive wrapper -->
+                @if (Model.GoodResult)
+                {
+                    <div class="card mb-3 responsive-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center mb-3">
+                                <img class="img-fluid" src="~/images/Frame 709.svg" alt="Message icon">
+                            </div>
+                            <h3 class="text-center mb-3 text-color">Email verified!</h3>
+                            <p class="h6 text-center text-color">
+                                You have successfully verified your account
+                            </p>
+                            <hr>
+                            <div class="d-flex justify-content-center mt-5">
+                                <a asp-page="/Account/Login" class="btn bgcolor btn-sm btn-block">Proceed to Login</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="card mb-3 responsive-card mt-5">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center mb-3">
+                                <img class="img-fluid" src="~/images/failed.png" height="400px" alt="Message icon">
+                            </div>
+                            <h3 class="text-center mb-3 text-danger">Account verification failed!</h3>
+                            <p class="h6 text-center text-color">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                            </p>
+                            <hr>
+                            <div class="d-flex justify-content-center mt-5">
+                                <a asp-page="/Account/Login" class="btn bgcolor btn-lg btn-block">Resend verification</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Platform_Settings.User_AccountsModel
+@{
+    ViewData["Title"] = "User Account Management";
+    int sn = 0, ns = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+
+}
+<div class="container my-5">
+    <h4 class="fw-bold">Platform Settings</h4>
+    <p class="text-muted">Configure core settings including roles, permissions, admin accounts, and payment behavior for MDAs</p>
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#role-panel">Role & Permissions</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#role-admin-account">Admin Account</a>
+        </li>
+        <li class="nav-item" role="presentation" data-bs-toggle="tab" data-bs-target="#role-payment">
+            <a class="nav-link" href="#">Payments</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!--CREATE ROLE PANEL-->
+        <div class="tab-pane fade show active" id="role-panel">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-end mb-3">
+                        <button class="btn btn-success" data-bs-target="#createnewroleModal" data-bs-toggle="modal">
+                            <i class="bi bi-plus"></i> Create New Role
+                        </button>
+                    </div>
+                    <table class="table " id="roletable" width="100%">
+                        <thead class="table">
+                            <tr>
+                                <th>S/N</th>
+                                <th>Role Name</th>
+                                <th>Description</th>
+                                <th>Number of Users</th>
+                                <th>Created On</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < 15; i++)
+                            {
+                                sn++;
+                                <tr>
+                                    <td>@(sn)</td>
+                                    <td>Super Admin</td>
+                                    <td>Full system access</td>
+                                    <td>1</td>
+                                    <td>12 Jan 2023</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary rounded-5 btn-sm me-1">
+                                            <i class="bi bi-eye"></i> View
+                                        </button>
+                                        <button class="btn btn-outline-secondary rounded-5 btn-sm" data-bs-target="#editroleModal" data-bs-toggle="modal">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                                sn++;
+                                <tr>
+                                    <td>@(sn)</td>
+                                    <td>Tax Admin</td>
+                                    <td>Limited admin tasks</td>
+                                    <td>2</td>
+                                    <td>12 Jan 2023</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary rounded-5 btn-sm me-1">
+                                            <i class="bi bi-eye"></i> View
+                                        </button>
+                                        <button class="btn btn-outline-secondary rounded-5 btn-sm" data-bs-target="#editroleModal" data-bs-toggle="modal">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                                sn++;
+                                <tr>
+                                    <td>@(sn)</td>
+                                    <td>MDA Admin</td>
+                                    <td>View-only rights</td>
+                                    <td>10</td>
+                                    <td>12 Jan 2023</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary rounded-5 btn-sm me-1">
+                                            <i class="bi bi-eye"></i> View
+                                        </button>
+                                        <button class="btn btn-outline-secondary rounded-5 btn-sm" data-bs-target="#editroleModal" data-bs-toggle="modal">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--ROLE TAB END HERE-->
+        </div>
+
+        <!--ADD ADMIN ACCOUNT PANEL-->
+        <div class="tab-pane fade show" id="role-admin-account">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-end mb-3">
+                        <button class="btn btn-success" data-bs-target="#createnewadminModal" data-bs-toggle="modal">
+                            <i class="bi bi-plus"></i> Add New Admin
+                        </button>
+                    </div>
+                    <table class="table" id="admintable" width="100%">
+                        <thead class="table-light">
+                            <tr>
+                                <th>S/N</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Created On</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < 15; i++)
+                            {
+                                ns++;
+                                <tr>
+                                    <td>@(ns)</td>
+                                    <td>Chika Okoro</td>
+                                    <td>destiny@real.com</td>
+                                    <td>Tax Admin</td>
+                                    <td><label class="badge badge-success"><i class="fas fa-sort-down"></i> Active</label></td>
+                                    <td>@DateTime.Now.ToShortDateString()</td>
+                                    <td>
+                                        <button class="btn btn-danger opacity-75 rounded-5 btn-sm me-1">
+                                            <i class="bi bi-check-circle"></i> Deactivate
+                                        </button>
+                                        <button class="btn btn-light rounded-5 btn-sm" data-bs-target="#editadminModal" data-bs-toggle="modal">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                                ns++;
+                                <tr>
+                                    <td>@(ns)</td>
+                                    <td>Chika Valentine</td>
+                                    <td>val@real.com</td>
+                                    <td>Sub Admin</td>
+                                    <td><label class="badge badge-danger opacity-75"><i class="fas fa-sort-down"></i> Inactive</label></td>
+                                    <td>@DateTime.Now.ToShortDateString()</td>
+                                    <td>
+                                        <button class="btn btn-success opacity-75 rounded-5 btn-sm me-1">
+                                            <i class="bi bi-check-circle"></i> Activate
+                                        </button>
+                                        <button class="btn btn-light rounded-5 btn-sm" data-bs-target="#editadminModal" data-bs-toggle="modal">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                                ns++;
+                                <tr>
+                                    <td>@(ns)</td>
+                                    <td>Chika Valentine</td>
+                                    <td>val@real.com</td>
+                                    <td>Sub Admin</td>
+                                    <td><label class="badge badge-danger opacity-75"><i class="fas fa-sort-down"></i> Inactive</label></td>
+                                    <td>@DateTime.Now.ToShortDateString()</td>
+                                    <td>
+                                        <button class="btn btn-success opacity-75 rounded-5 btn-sm me-1">
+                                            <i class="bi bi-check-circle"></i> Activate
+                                        </button>
+                                        <button class="btn btn-light rounded-5 btn-sm" data-bs-target="#editadminModal" data-bs-toggle="modal">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--PAYMENT PANEL-->
+        <div class="tab-pane fade show" id="role-payment">
+            <hr />
+            <div class="h4 mb-3">Permissions</div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="mdastransaction" checked>
+                <label class="form-check-label" for="mdastransaction">Enable/Disable MDAs’ ability to view transactions</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="directcredit" checked>
+                <label class="form-check-label" for="directcredit">Enable escrow vs direct credit model (based on future info)</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="definerules" checked>
+                <label class="form-check-label" for="definerules">Define revenue share rules (optional field group)</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="reconciliation" checked>
+                <label class="form-check-label" for="reconciliation">Setup default reconciliation intervals (daily, weekly, monthly)</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--CREATE NEW ROLE MODAL-->
+<div class="modal fade" id="createnewroleModal" tabindex="-1" aria-labelledby="createnewroleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="createnewroleModalLabel">Create New Role</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <div class="mb-3">
+                    <label for="rolename" class="form-label">Role Name</label>
+                    <input type="text" class="form-control" id="rolename" placeholder="Tax Admin">
+                </div>
+
+                <div class="mb-3">
+                    <label for="roledescription" class="form-label">Role Description</label>
+                    <textarea rows="2" class="form-control" id="roledescription"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="permissions" class="form-label">Permissions</label>
+                    <select class="form-select" multiple id="permissions">
+                        <option selected>Select permissions</option>
+                        <option value="tax">Manage Tax Agents</option>
+                        <option value="audit">Approve TCC</option>
+                        <option value="legal">View Tax Payer Details</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-success w-100" type="button">Save & Create Role</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--EDIT ROLE MODAL-->
+<div class="modal fade" id="editroleModal" tabindex="-1" aria-labelledby="editroleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="editroleModalLabel">Edit Role</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <div class="mb-3">
+                    <label for="rolename" class="form-label">Role Name</label>
+                    <input type="text" class="form-control" id="rolename" placeholder="Tax Admin">
+                </div>
+
+                <div class="mb-3">
+                    <label for="roledescription" class="form-label">Role Description</label>
+                    <textarea rows="2" class="form-control" id="roledescription"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="permissions" class="form-label">Permissions</label>
+                    <select class="form-select" multiple id="permissions">
+                        <option selected>Select permissions</option>
+                        <option value="tax">Manage Tax Agents</option>
+                        <option value="audit">Approve TCC</option>
+                        <option value="legal">View Tax Payer Details</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-success w-100" type="button">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--CREATE NEW ADMIN MODAL-->
+<div class="modal fade" id="createnewadminModal" tabindex="-1" aria-labelledby="createnewadminModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="createnewadminModalLabel">Create New Admin</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <div class="mb-3">
+                    <label for="adminname" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="adminname" placeholder="Tax Admin">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="text" class="form-control" id="email" placeholder="Tax Admin">
+                </div>
+                <div class="mb-3">
+                    <label for="permissions" class="form-label">Permissions</label>
+                    <select class="form-select" multiple id="permissions">
+                        <option selected>Select permissions</option>
+                        <option value="MDA">MDA Admin</option>
+                        <option value="tax">Tax Admin</option>
+                        <option value="sub">Sub Admin</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-success w-100" type="button">Save & Create Admin</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--EDIT ADMIN MODAL-->
+<div class="modal fade" id="editadminModal" tabindex="-1" aria-labelledby="editadminModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="editadminModalLabel">Edit Admin</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <div class="mb-3">
+                    <label for="adminname" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="adminname" placeholder="Tax Admin">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="text" class="form-control" id="email" placeholder="Tax Admin">
+                </div>
+                <div class="mb-3">
+                    <label for="permissions" class="form-label">Permissions</label>
+                    <select class="form-select" multiple id="permissions">
+                        <option selected>Select permissions</option>
+                        <option value="MDA">MDA Admin</option>
+                        <option value="tax">Tax Admin</option>
+                        <option value="sub">Sub Admin</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-success w-100" type="button">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+
+    <script>
+        $(document).ready(async function () {
+            //admintable
+            $('#admintable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+            //TABLE LOADING DEMO
+            $('#roletable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+        });
+
+
+
+    </script>
+}

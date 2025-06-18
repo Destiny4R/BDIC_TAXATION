@@ -1,0 +1,38 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Account.Confirm_Message.Reset_Success_MessageModel
+@{
+    //ViewData["Title"] = "";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BDIC Reset Password</title>
+    <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/confirmmessage.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="mb-5 d-flex justify-content-center">
+                    <img src="~/images/Frame 709.svg" />
+                </div>
+                <h4 class="login-title">Password reset successful</h4>
+                <small class="login-subtitle">Your password has been successfully reset!</small>
+            </div>
+
+            <div class="mt-5">
+                <a asp-page="/Account/Login" class="btn btn-success btn-lg w-100">Back to Login Page</a>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+
+

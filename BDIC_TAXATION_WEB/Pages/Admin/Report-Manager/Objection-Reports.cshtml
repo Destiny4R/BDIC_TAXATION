@@ -1,0 +1,261 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Report_Manager.Objection_ReportsModel
+@{
+    ViewData["Title"] = "Objection Reports";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-strat align-items-center flex-wrap gap-2">
+                <div>
+                    <h5 class="mb-0 fw-semibold">Objection Reports</h5>
+                    <small class="text-muted">Reports/Objection Reports</small>
+                </div>
+            </div>
+            <div class="row mt-3 mb-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search Reference ID/BTIN/Taxpayer Name">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar"> From:</i></span>
+                                <input type="text" class="form-control border-start-0 startdate" placeholder="dd/mm/yyy">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar"></i> To:</span>
+                                <input type="text" class="form-control border-start-0 enddate" placeholder="dd/mm/yyy">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <select class="custom-select">
+                                    <option value="paid" selected>Tax Paid</option>
+                                    <option value="not paid">Not Paid</option>
+                                </select>
+                                <select class="custom-select">
+                                    <option value="Status" selected>Status</option>
+                                    <option value="Active">Active</option>
+                                </select>
+                                <button class="btn btn-green btn-outline-success">
+                                    Apply Filters
+                                </button>
+                                <button class="btn btn-green btn-outline-success" type="button">
+                                    <i class="bi bi-cloud-arrow-down-fill"></i> Export
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <table class="table table-striped table-bordered" id="annualreturntable" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Taxpayer Name</th>
+                            <th>BTIN</th>
+                            <th>Objection Type</th>
+                            <th>Tax Period</th>
+                            <th>Submitted On</th>
+                            <th>Status</th>
+                            <th>Assigned To</th>
+                            <th>Resolution</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 1; i < 10; i++)
+                        {
+                            sn++;
+                            <tr>
+                                <td>@sn</td>
+                                <td>Prestige Tech</td>
+                                <td>BTIN-12345092</td>
+                                <td>Overcharged Tax</td>
+                                <td>Q1 2025</td>
+                                <td>@(DateTime.UtcNow.ToShortDateString())</td>
+                                <td><span class="text-success">Resolved</span></td>
+                                <th>Admin005</th>
+                                <th>Penalty Waived</th>
+                                <td>
+                                    <button class="btn btn-light btn-sm rounded-5" type="button" data-bs-toggle="modal" data-bs-target="#objectiondetailsModal">
+                                        <i class="ti-eye"></i> View
+                                    </button>
+                                    <button class="btn btn-light btn-sm rounded-5" data-bs-toggle="modal" data-bs-target="#addnoteModal" type="button">
+                                        <i class="ti-flag"></i> Add Note
+                                    </button>
+                                </td>
+                            </tr>
+                            sn++;
+                            <tr>
+                                <td>@sn</td>
+                                <td>Prestige Tech</td>
+                                <td>BTIN-85885858</td>
+                                <td>Overcharged Tax</td>
+                                <td>Q1 2025</td>
+                                <td>@(DateTime.UtcNow.ToShortDateString())</td>
+                                <td><span class="text-warning">Pending</span></td>
+                                <th>--</th>
+                                <th>--</th>
+                                <td>
+                                    <button class="btn btn-light btn-sm rounded-5" type="button" data-bs-toggle="modal" data-bs-target="#objectiondetailsModal">
+                                        <i class="ti-eye"></i> View
+                                    </button>
+                                    <button class="btn btn-light btn-sm rounded-5" type="button">
+                                        <i class="ti-flag"></i> Assign
+                                    </button>
+                                </td>
+                            </tr>
+                            sn++;
+                            <tr>
+                                <td>@sn</td>
+                                <td>Prestige Tech</td>
+                                <td>BTIN-12345092</td>
+                                <td>Overcharged Tax</td>
+                                <td>Q1 2025</td>
+                                <td>@(DateTime.UtcNow.ToShortDateString())</td>
+                                <td><span class="text-success">Resolved</span></td>
+                                <th>Admin005</th>
+                                <th>Penalty Waived</th>
+                                <td>
+                                    <button class="btn btn-light btn-sm rounded-5" type="button" data-bs-toggle="modal" data-bs-target="#objectiondetailsModal">
+                                        <i class="ti-eye"></i> View
+                                    </button>
+                                    <button class="btn btn-light btn-sm rounded-5" data-bs-toggle="modal" data-bs-target="#addnoteModal" type="button">
+                                        <i class="ti-flag"></i> Add Note
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--REVENUE REPORT VIEW MODAL-->
+<div class="modal fade" id="objectiondetailsModal" tabindex="-1" aria-labelledby="objectiondetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <div class="modal-body border-0">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <h4 class="modal-title" id="objectiondetailsModalLabel">Objection Details</h4>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-2 row mt-3">
+                            <div class="col-6 detail-label">Taxpayer Name</div>
+                            <div class="col-6 text-end"><strong>Prestige Tech</strong></div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-6 detail-label">BTIN</div>
+                            <div class="col-6 text-end"><strong>BTIN-12345092</strong></div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-6 detail-label">Objection Type</div>
+                            <div class="col-6 text-end"><strong>Over charged tax</strong></div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-6 detail-label">Tax Period</div>
+                            <div class="col-6 text-end"><strong>Q1 2025</strong></div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-6 detail-label">Submitted On</div>
+                            <div class="col-6 text-end"><strong>04 Apr 2025</strong></div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-6 detail-label">Status</div>
+                            <div class="col-6 text-end">
+                                <span class="status-badge">Approved</span>
+                            </div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-6 detail-label">Assigned to</div>
+                            <div class="col-6 text-end"><strong>Admin05</strong></div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="col-6 detail-label">Resolution</div>
+                            <div class="col-6 text-end"><strong>Penalty waved</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--REVENUE REPORT VIEW MODAL-->
+<div class="modal fade" id="addnoteModal" tabindex="-1" aria-labelledby="addnoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <div class="modal-body border-0">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <h3 class="modal-title" id="addnoteModalLabel">Add Note</h3>
+
+                <div class="mb-2 row mt-3">
+                    <label class="col-form-label">Note</label>
+                    <textarea class="form-control" rows="5">We need more information about your tax deductions.....</textarea>
+                </div>
+                <div class="container text-center">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <button class="btn btn-green btn-success w-100" type="button">Send</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-light w-100" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#annualreturntable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false
+            });
+            flatpickr(".startdate", {
+                dateFormat: "Y-m-d",
+            });
+            flatpickr(".enddate", {
+                dateFormat: "Y-m-d",
+            });
+        });
+    </script>
+}

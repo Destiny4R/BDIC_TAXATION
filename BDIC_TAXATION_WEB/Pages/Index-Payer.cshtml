@@ -1,0 +1,306 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Index_PayerModel
+@{
+    ViewData["Title"] = "Tax payer dashboard";
+}
+
+<div class="container">
+    <div class="content-header-left col-md-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="col-sm-8">
+                <div>
+                    <div class="h3">
+                        <strong class="text-muted">Hello,</strong>&ensp;<strong>@(Model.Name)</strong>
+                    </div>
+                    <p>Welcome to your dashboard</p>
+                </div>
+            </div>
+            <div class="col-sm-4  justify-content-start d-flex justify-content-md-end">
+                <div class="">
+                    <a class="btn" style="background-color:green; color:white;" asp-page="/Tax-Payer/File-Tax"><i class="fa fa-plus">&ensp; File Tax Return</i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!Model.completeprofile)
+    {
+        <div class="alert alert-warning fade show" role="alert">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="d-flex justify-content-between mt-1">
+                <div>
+                    <strong>Complete your profile</strong><br />
+                    <small>You need to complete your profile to have access to more features...</small>
+                </div>
+                <div>
+                    <a class="btn btn-secondary" asp-page="/Tax-Payer/Account-Settings">Update profile</a>
+                </div>
+            </div>
+        </div>
+    }
+        <div class="row p-0">
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <strong>Payment overview</strong>
+                            <p class="text-muted">Manage and track your payments</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-4 ">
+                                                <div class="h1 mt-2 ml-2" style="background: rgba(242, 242, 242, 1); ">
+                                                    <i class="fas fa-address-card h2"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <p>Total due</p>
+                                                <strong>N260,000.00</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <center class="mt-3">
+                                            <a class="btn btn-light">Make Payment <i class="mdi mdi-arrow-top-right"></i></a>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr>
+                                            <td><span class="badge bg-danger"><i class="mdi mdi-radiobox-blank text-danger"></i></span></td>
+                                            <td>Overdue payment</td>
+                                            <td>N10,000.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-warning"><i class="mdi mdi-radiobox-blank text-warning"></i></span></td>
+                                            <td>Pending payment</td>
+                                            <td>N250,000.00 due by March 31, 2025</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead style="background: rgba(243, 243, 243, 1);
+">
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Receipt</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>March 1, 2025</td>
+                                                <td>N10,000.00</td>
+                                                <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                                <td><a class="btn btn-sm btn-light">Download</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>March 1, 2025</td>
+                                                <td>N10,000.00</td>
+                                                <td><span class="badge bg-soft-warning text-warning h4">Pending</span></td>
+                                                <td><a class="btn btn-sm btn-light">Download</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>March 1, 2025</td>
+                                                <td>N10,000.00</td>
+                                                <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                                <td><a class="btn btn-sm btn-light">Download</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p><strong>Upcoming Deadline</strong></p>
+                                <div class="text-muted">Manage and track your next important Dealine</div>
+                            </div>
+                            <div class="col-12">
+                                <div style="border:solid, 2px, grey; border-radius:5px;" class="bg-light">
+                                    <p>Personal Income Tax Filling Due: March 31, 2025 <a href="#" class="btn btn-sm btn-secondary">Make payment</a></p>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <div class="p-1 bg-warning opacity-50" style="color:black; border-radius: 5px;">
+                                    <div>Personal Income Tax Filling Due: March 31, 2025 <a href="#" class="btn btn-sm btn-secondary end-100">Make payment</a></div>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead style="background: rgba(243, 243, 243, 1);
+">
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Receipt</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>March 1, 2025</td>
+                                                <td>N10,000.00</td>
+                                                <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                                <td><a class="btn btn-sm btn-light">Download</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>March 1, 2025</td>
+                                                <td>N10,000.00</td>
+                                                <td><span class="badge bg-soft-warning text-warning h4">Pending</span></td>
+                                                <td><a class="btn btn-sm btn-light">Download</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>March 1, 2025</td>
+                                                <td>N10,000.00</td>
+                                                <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                                <td><a class="btn btn-sm btn-light">Download</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>March 1, 2025</td>
+                                                <td>N10,000.00</td>
+                                                <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                                <td><a class="btn btn-sm btn-light">Download</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 ">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                            <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center">
+                                <strong class="me-2 mb-2 mb-sm-0">Recent activities:</strong>
+                                <select class="form-select form-select-sm w-auto">
+                                    <option value="all" selected  class="badge badge-primary">All</option>
+                                    <option value="Successful" class="badge badge-success">Successful</option>
+                                    <option value="Pending" class="badge badge-warning">Pending</option>
+                                    <option value="Failed" class="badge badge-danger">Failed</option>
+                                </select>
+                            </div>
+                            <div>
+                                <a href="#" class="btn btn-link text-success p-0">View all</a>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive mt-3">
+                            <table class="table table-bordered ">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Activity Type</th>
+                                        <th>User ID</th>
+                                        <th>Status</th>
+                                        <th>Amount</th>
+                                        <th>Receipt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary ">Download receipt</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary">Download receipt</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary">Download receipt</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary">Download receipt</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-danger text-success h4">Failed</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary">Download receipt</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary">Download receipt</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary">Download receipt</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-success text-success h4">Successful</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary">View receipt</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>March 15, 2025</td>
+                                        <td>Tax filed</td>
+                                        <td>USER1001</td>
+                                        <td><span class="badge bg-soft-warning text-success h4">pending</span></td>
+                                        <td>N10,000.00</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary">View receipt</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

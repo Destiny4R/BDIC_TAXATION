@@ -1,0 +1,63 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Ministries.UpsertModel
+@{
+}
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="offset-md-3 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">@ViewData["Title"]</h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-horizontal">
+                            <div class="form-body">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <span>Ministry name</span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="position-relative has-icon-left">
+                                            <input type="text" id="fname-icon" class="form-control" name="fname-icon" placeholder="Ministry of BDIC">
+                                            <div class="form-control-position">
+                                                <i class="fas fa-university"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <span>Email address</span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="position-relative has-icon-left">
+                                            <input type="text" id="fname-icon" class="form-control" name="fname-icon" placeholder="Ministry of BDIC">
+                                            <div class="form-control-position">
+                                                <i class="fas fa-envelope-square"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <span>Description</span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <textarea class="custom-control">
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 offset-md-4">
+                                        <button type="submit" class="btn btn-primary mr-1 mb-1">Register</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

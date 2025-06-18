@@ -1,0 +1,218 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Report_Manager.Revenue_ReportModel
+@{
+    ViewData["Title"] = "Revenue/Tax Payment Reports";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-strat align-items-center flex-wrap gap-2">
+                <div>
+                    <h5 class="mb-0 fw-semibold">Revenue/Tax Payment Reports</h5>
+                    <small class="text-muted">Reports/Tax payer reports</small>
+                </div>
+            </div>
+            <div class="row mt-3 mb-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search Reference ID/BTIN/Taxpayer Name">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar"> From:</i></span>
+                                <input type="text" class="form-control border-start-0 startdate" placeholder="dd/mm/yyy">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar"></i> To:</span>
+                                <input type="text" class="form-control border-start-0 enddate" placeholder="dd/mm/yyy">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <select class="custom-select">
+                                    <option value="Status" selected>Status</option>
+                                    <option value="Active">Active</option>
+                                </select>
+                                <select class="custom-select">
+                                    <option value="" selected>MDAs</option>
+                                    <option value="Agri">Ministry of Agri</option>
+                                    <option value="Education">Ministry of Education</option>
+                                </select>
+                                <button class="btn btn-green btn-outline-success">
+                                    Apply Filters
+                                </button>
+                                <button class="btn btn-green btn-outline-success" type="button">
+                                    <i class="bi bi-cloud-arrow-down-fill"></i> Export
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <table class="table table-striped table-bordered" id="revenuetable" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Taxpayer Name</th>
+                            <th>BTIN</th>
+                            <th>MDA</th>
+                            <th>Revenue Item/Tax Type</th>
+                            <th>Amount Paid (₦)</th>
+                            <th>Payment Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 1; i < 10; i++)
+                        {
+                            sn++;
+                            <tr>
+                                <td>@sn</td>
+                                <td>Linda Chukwu</td>
+                                <td>BTIN-12345092</td>
+                                <td>National Oil Corporation</td>
+                                <th>Communication Tax</th>
+                                <th>₦1,500,000</th>
+                                <td>@(DateTime.UtcNow.ToShortDateString())</td>
+                                <td><span class="text-success">Success</span></td>
+                                <td>
+                                    <button class="btn btn-light rounded-5" type="button" data-bs-toggle="modal" data-bs-target="#recordDetailsModal"><i class="ti-eye"></i> View</button>
+                                </td>
+                            </tr>
+                            sn++;
+                            <tr>
+                                <td>@sn</td>
+                                <td>Chinwe Okeke</td>
+                                <td>BTIN-12345092</td>
+                                <td>National Oil Corporation</td>
+                                <th>Petroleum Tax</th>
+                                <th>₦2,250,000</th>
+                                <td>@(DateTime.UtcNow.ToShortDateString())</td>
+                                <td><span class="text-warning">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-light rounded-5" type="button" data-bs-toggle="modal" data-bs-target="#recordDetailsModal"><i class="ti-eye"></i> View</button>
+                                </td>
+                            </tr>
+                            sn++;
+                            <tr>
+                                <td>@sn</td>
+                                <td>Barns Product</td>
+                                <td>BTIN-12345092</td>
+                                <td>Internal Revenue Board</td>
+                                <th>Corporate Tax</th>
+                                <th>₦1,800,000</th>
+                                <td>@(DateTime.UtcNow.ToShortDateString())</td>
+                                <td><span class="text-danger">Failed</span></td>
+                                <td>
+                                    <button class="btn btn-light rounded-5" type="button" data-bs-toggle="modal" data-bs-target="#recordDetailsModal"><i class="ti-eye"></i> View</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--REVENUE REPORT VIEW MODAL-->
+<div class="modal fade" id="recordDetailsModal" tabindex="-1" aria-labelledby="recordDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <div class="modal-body border-0">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <h4 class="modal-title" id="recordDetailsModalLabel">Record Details</h4>
+            
+                <div class="mb-2 row mt-3">
+                    <div class="col-6 detail-label">Taxpayer Name</div>
+                    <div class="col-6 text-end"><strong>Ministry of Transport</strong></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">BTIN</div>
+                    <div class="col-6 text-end"><strong>MDA-REV-009</strong></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">MDA</div>
+                    <div class="col-6 text-end"><strong>Internal Revenue Board</strong></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">Revenue Item / Tax Type</div>
+                    <div class="col-6 text-end"><strong>Corporate Tax</strong></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">Amount Paid (₦)</div>
+                    <div class="col-6 text-end"><strong>₦1,800,000</strong></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">Payment Date</div>
+                    <div class="col-6 text-end"><strong>10 Feb 2023</strong></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">Status</div>
+                    <div class="col-6 text-end">
+                        <span class="text-success">Successful</span>
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">Channel</div>
+                    <div class="col-6 text-end"><strong>POS Transfer</strong></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">Location</div>
+                    <div class="col-6 text-end"><strong>Makurdi</strong></div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-6 detail-label">Reference ID</div>
+                    <div class="col-6 text-end"><strong>PAY-001237</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#revenuetable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false
+            });
+            flatpickr(".startdate", {
+                dateFormat: "Y-m-d",
+            });
+            flatpickr(".enddate", {
+                dateFormat: "Y-m-d",
+            });
+        });
+    </script>
+}

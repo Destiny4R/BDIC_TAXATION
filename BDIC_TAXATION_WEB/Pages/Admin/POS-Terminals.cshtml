@@ -1,0 +1,342 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.POS_TerminalsModel
+@{
+
+    ViewData["Title"] = "Tax Clearance Certificate (TCC)";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+
+        .modal-footer button {
+            min-width: 150px;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">POS Terminals</h5>
+                    <small class="text-muted">Manage all POS terminals configured for tax and revenue </small><br />
+                    <small class="text-muted">collections across regions and agents</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Terminal ID, Assigned Agent, Status">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-cloud-arrow-down me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-outline-success btn-green" data-bs-toggle="modal" data-bs-target="#addnewterminalModal" href="#"><i class="fas fa-plus"></i> Add New POS Terminal</a>
+            </div>
+
+        </div>
+        <div class="card-body mt-3">
+            <table class="table" id="posterminalTable">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Terminal ID</th>
+                        <th>Assigned Agent</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Activated On</th>
+                        <th>Last Transaction</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 15; i++)
+                    {
+
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>POS-00123</td>
+                            <td>Kor Japheth T.</td>
+                            <td>Modern Market</td>
+                            <td><span class="badge bg-danger opacity-75">Deactivated</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>@DateTime.UtcNow.AddDays(sn + 120)</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" data-bs-toggle="modal" data-bs-target="#manageposterminalModal" href="#"><i class="ti-settings"></i> Manage</a>
+                            </td>
+                        </tr>
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>POS-00123</td>
+                            <td>Kor Japheth T.</td>
+                            <td>Modern Market</td>
+                            <td><span class="badge bg-danger opacity-75">Deactivated</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>@DateTime.UtcNow.AddDays(sn + 120)</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" href="#"><i class="ti-reload"></i> Reactivate</a>
+                            </td>
+                        </tr>
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>POS-00123</td>
+                            <td>Kor Japheth T.</td>
+                            <td>Modern Market</td>
+                            <td><span class="badge bg-warning opacity-75">Inactive</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>@DateTime.UtcNow.AddDays(sn + 120)</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" data-bs-target="#assignagentModal" data-bs-toggle="modal" href="#"><i class="ti-plus"></i> Assign Agent</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add NEW POS TERMINAL AGENT MODAL -->
+<div class="modal fade" id="addnewterminalModal" tabindex="-1" aria-labelledby="addnewterminalModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div>
+                    <h5 class="modal-title" id="addnewterminalModalLabel">Add New POS Terminal</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="terminal" class="form-label">Terminal ID</label>
+                        <input type="text" class="form-control" id="terminal" placeholder="POS-00023">
+                    </div>
+                    <div class="mb-3">
+                        <label for="assign" class="form-label">Assign Agent</label>
+                        <select class="form-select" id="lga">
+                            <option selected>Select Agent</option>
+                            <option value="1">Agent 1</option>
+                            <option value="2">Agent 2</option>
+                            <option value="3">Agent 3</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lga" class="form-label">Collection (LGA)</label>
+                        <select class="form-select" id="lga">
+                            <option selected>Select LGA</option>
+                            <option value="1">LGA 1</option>
+                            <option value="2">LGA 2</option>
+                            <option value="3">LGA 3</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="region" class="form-label">Market/Region/Area</label>
+                        <select class="form-select" id="region">
+                            <option selected>Select access region</option>
+                            <option value="1">Region 1</option>
+                            <option value="2">Region 2</option>
+                            <option value="3">Region 3</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="activationDate" class="form-label">Activation Date</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <input type="date" class="form-control" id="activationDate" placeholder="dd/mm/yy">
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-green">Save Terminal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MANAGE POS TERMINAL MODAL -->
+<div class="modal fade" id="manageposterminalModal" tabindex="-1" aria-labelledby="manageposterminalModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div>
+                    <h5 class="modal-title" id="manageposterminalModalLabel">Manage POS Terminal</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="terminal" class="form-label">Terminal ID</label>
+                        <input type="text" class="form-control" id="terminal" placeholder="POS-00023" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="assign" class="form-label">Agent</label>
+                        <select class="form-select" id="lga">
+                            <option selected>Select Agent</option>
+                            <option value="1">Agent 1</option>
+                            <option value="2">Agent 2</option>
+                            <option value="3">Agent 3</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="region" class="form-label">Market/Region/Area</label>
+                        <select class="form-select" id="region">
+                            <option selected>Select access region</option>
+                            <option value="1">Region 1</option>
+                            <option value="2">Region 2</option>
+                            <option value="3">Region 3</option>
+                        </select>
+                    </div>
+                    <div class="mt-3 mb-3"><strong>Transactions Made Through POS</strong></div>
+                    <div class="mb-3">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Tax Payer</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>The Return Tec LTD</td>
+                                    <td>N205,00.00</td>
+                                    <td>@DateTime.Now.ToShortDateString()</td>
+                                    <td><span class="badge bg-success opacity-75">Successful</span></td>
+                                </tr>
+                                <tr>
+                                    <td>The Return Tec LTD</td>
+                                    <td>N205,00.00</td>
+                                    <td>@DateTime.Now.ToShortDateString()</td>
+                                    <td><span class="badge bg-danger opacity-75">Failed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>The Return Tec LTD</td>
+                                    <td>N205,00.00</td>
+                                    <td>@DateTime.Now.ToShortDateString()</td>
+                                    <td><span class="badge bg-success opacity-75">Successful</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mb-3">
+                        <a href="#">View Full Histry</a>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-green">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MANAGE POS TERMINAL MODAL -->
+<div class="modal fade" id="assignagentModal" tabindex="-1" aria-labelledby="assignagentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div>
+                    <h5 class="modal-title" id="assignagentModalLabel">Assign Agent</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="terminal" class="form-label">Terminal ID</label>
+                        <input type="text" class="form-control" id="terminal" placeholder="POS-00023" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="assign" class="form-label">Agent</label>
+                        <select class="form-select" id="lga">
+                            <option selected>Select Agent</option>
+                            <option value="1">Agent 1</option>
+                            <option value="2">Agent 2</option>
+                            <option value="3">Agent 3</option>
+                        </select>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-green">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#posterminalTable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+        });
+        // Initialize Flatpickr for date input
+        flatpickr("#activationDate", {
+            dateFormat: "Y-m-d",
+            allowInput: true,
+            defaultDate: new Date()
+        });
+    </script>
+}

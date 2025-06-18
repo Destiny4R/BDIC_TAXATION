@@ -1,0 +1,253 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.TCC_RequestModel
+@{
+    ViewData["Title"] = "Tax Clearance Certificate (TCC)";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+
+        .modal-footer button {
+            min-width: 150px;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">Tax Clearance Certificate (TCC)</h5>
+                    <small class="text-muted">Manage and approve tax clearance certificate approval</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-cloud-arrow-down me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+            <div class="btn-group mt-3" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-secondary" for="btnradio1">New Request</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-secondary" for="btnradio2">Approved Request</label>
+            </div>
+
+        </div>
+        <div class="card-body mt-3">
+            <table class="table" id="tccertiTable">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Payer Name</th>
+                        <th>BTIN/Entity ID</th>
+                        <th>Request Date</th>
+                        <th>Tax Period</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 15; i++)
+                    {
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Adamu & Sons Ltd</td>
+                            <td>01019635584</td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>@DateTime.UtcNow.AddDays(sn + 120)</td>
+                            <td><span class="badge bg-success opacity-75">Active</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" href="#" data-bs-toggle="modal" data-bs-target="#reviewRequestModal">View</a>
+                                <a class="btn btn-sm btn-light rounded" href="#"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-light rounded" href="#"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Emmanuel James</td>
+                            <td>0101963586</td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>@DateTime.UtcNow.AddDays(sn + 20)</td>
+                            <td><span class="badge bg-warning opacity-75">Pending</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" href="#" data-bs-toggle="modal" data-bs-target="#reviewRequestModal">View</a>
+                                <a class="btn btn-sm btn-light rounded" href="#"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-light rounded" href="#"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="reviewRequestModal" tabindex="-1" aria-labelledby="reviewRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="h3 text-center mb-2" id="reviewRequestModalLabel">Review request</div>
+                <div class="mb-3">
+                    <div class="row gy-2">
+                        <div class="col-12 d-flex justify-content-between"><label>Request ID</label> <div>TCC-001234</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Submitted by</label> <div>Adamu & Sons Ltd</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>BTIN / Entity ID</label> <div>0102837465</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Tax Period Requested</label><br> <div>Jan–Dec 2024</div></div>
+                        <div class="col-12 d-flex justify-content-between"><label>Purpose of Request</label><br> <div>Tendering for Government Contract</div></div>
+                        <div class="col-12  d-flex justify-content-between">
+                            <label>Supporting Documents</label><br>
+                            <button class="btn btn-sm rounded-5 btn-outline-secondary">View document</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <strong>📊 Tax Compliance Summary</strong>
+                    <div class="row gy-2">
+                        <div class="col-12 d-flex justify-content-between"><span class="summary-icon1">✅ All Taxes Filed:</span> <label>Yes</label></div>
+                        <div class="col-12 d-flex justify-content-between"><span class="summary-icon1">💰 All Payments Made: </span><label>Yes</label></div>
+                        <div class="col-12 d-flex justify-content-between"><span class="summary-icon1">❌ Outstanding Liabilities: </span><label>₦0.00</label></div>
+                        <div class="col-12 d-flex justify-content-between"><span class="summary-icon1">🕓 Previous TCC Issued: </span><label>03 Feb 2024</label></div>
+                    </div>
+                </div>
+            </div>
+            <div class=" p-4">
+                <button type="button" class="btn btn-success w-100 btn-green">Approve</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FILTER MODAL -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 shadow-sm">
+            <div class="modal-body p-4">
+                <h5 class="fw-bold text-dark mb-3">Filter</h5>
+
+                <!-- Nav Tabs -->
+                <ul class="nav nav-tabs nav-fill bg-light rounded-pill mb-3" id="filterTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active rounded-pill" id="dates-tab" data-bs-toggle="tab" data-bs-target="#dates" type="button" role="tab" aria-controls="dates" aria-selected="true">Dates</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill" id="statuses-tab" data-bs-toggle="tab" data-bs-target="#statuses" type="button" role="tab" aria-controls="statuses" aria-selected="false">Statuses</button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content mt-2" id="filterTabContent">
+                    <!-- Dates Tab -->
+                    <div class="tab-pane fade show active" id="dates" role="tabpanel" aria-labelledby="dates-tab">
+                        <div class="mb-3">
+                            <label class="form-label">From</label>
+                            <input type="date" class="form-control startdate">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">To</label>
+                            <input type="date" class="form-control enddate">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success">Apply</button>
+                            <button class="btn btn-light">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Statuses Tab -->
+                    <div class="tab-pane fade" id="statuses" role="tabpanel" aria-labelledby="statuses-tab">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="status" id="pending" value="Pending">
+                            <label class="form-check-label" for="pending">Pending</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="status" id="paid" value="approved">
+                            <label class="form-check-label" for="approved">Approved</label>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-success">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tccertiTable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+        });
+        flatpickr(".startdate", {
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "F j, Y",
+        });
+
+        flatpickr(".enddate", {
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "F j, Y",
+        });
+    </script>
+}

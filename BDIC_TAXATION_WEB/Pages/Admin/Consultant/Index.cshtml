@@ -1,0 +1,534 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Consultant.IndexModel
+@{
+    ViewData["Title"] = "Consultant Account Management";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 40px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 8px 8px;
+                text-decoration: none;
+                justify-content: center;
+                /*display: block;*/
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #f1f1f1
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">Consultants</h5>
+                    <small class="text-muted">View, add, and manage tax and revenue consultants approved to </small><br />
+                    <small class="text-muted">operate on the platform</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-cloud-arrow-down me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-success btn-green" type="button" data-bs-toggle="modal" data-bs-target="#addConsultantModal"><i class="fas fa-plus"></i> Add New Consultant</button>
+            </div>
+
+        </div>
+        <div class="card-body">
+            @if (TempData["success"] != null)
+            {
+                <div class="alert alert-outline-success alert-dismissible fade show mt-2 mb-2" role="alert">
+                    <strong>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <symbol id="check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                            </symbol>
+                        </svg>
+                    </strong> @TempData["success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+                    <strong>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            </symbol>
+                        </svg>
+                    </strong> @TempData["error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            <table class="table table- table-bordered" id="consultantTable2">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Consultant ID</th>
+                        <th>Company Name</th>
+                        <th>Specialization</th>
+                        <th>Status</th>
+                        <th>Registered On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 15; i++)
+                    {
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Jane Doe</td>
+                            <td>CST-00123</td>
+                            <td>TaxPro Consulting</td>
+                            <td>Tax Advisory</td>
+                            <td><span class="badge bg-success opacity-75"><i class="fas fa-angle-down"></i> Active</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded-5" data-bs-toggle="modal" data-bs-target="#consultantDetailsModal" href="#"><i class="ti-settings"></i> Manage</a>
+                            </td>
+                        </tr>
+
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Jane Doe</td>
+                            <td>CST-00123</td>
+                            <td>TaxPro Consulting</td>
+                            <td>Tax Advisory</td>
+                            <td><span class="badge bg-danger opacity-75"><i class="fas fa-angle-down"></i> Deactivated</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded-5" data-bs-toggle="modal" data-bs-target="#manageposterminalModal" href="#"><i class="ti-reload"></i> Reactivate</a>
+                            </td>
+                        </tr>
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Jane Doe</td>
+                            <td>CST-00123</td>
+                            <td>TaxPro Consulting</td>
+                            <td>Tax Advisory</td>
+                            <td><span class="badge bg-warning opacity-75"><i class="fas fa-angle-down"></i> Pending</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded-5" href="#"><i class="ti-plus"></i> Activate</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--ADD CONSULTANT-->
+<div class="modal fade" id="addConsultantModal" tabindex="-1" aria-labelledby="addConsultantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="addConsultantModalLabel">Add New Consultant</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <form>
+                    <div class="mb-3">
+                        <label for="consultantFullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="consultantFullName" placeholder="Tersoo Solomon">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="companyName" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="companyName" placeholder="Tersoo Solomon">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="specialization" class="form-label">Specialization / Services</label><br/>
+                        <select class="form-select specialize2" id="specialization" style="width:100%" asp-items="Model.Consultant">
+                            <option selected>Select specialization</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="consultantEmail" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control" id="consultantEmail" placeholder="tersoosolomon@gmail.com">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="consultantPhone" class="form-label">Phone</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                            <input type="tel" class="form-control" id="consultantPhone" placeholder="08169192646">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="activationDate" class="form-label">Date of Approval</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <input type="date" class="form-control" id="approvalDate" placeholder="dd/mm/yy">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-green w-100">Add Consultant</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL FOR EDIT CONSULTANT DATA-->
+<div class="modal fade" id="editConsultantModal" tabindex="-1" aria-labelledby="editConsultantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="editConsultantModalLabel">Edit Consultant</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <form>
+                    <div class="mb-3">
+                        <label for="consultantFullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="consultantFullName" placeholder="Tersoo Solomon">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="companyName" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="companyName" placeholder="Tersoo Solomon">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="specialization" class="form-label">Specialization / Services</label><br />
+                        <select class="form-select specialize" style="width:100%;" id="specialization" asp-items="Model.Consultant">
+                            <option selected disabled>Select specialization</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="consultantEmail" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" class="form-control" id="consultantEmail" placeholder="tersoosolomon@gmail.com">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="consultantPhone" class="form-label">Phone</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                            <input type="tel" class="form-control" id="consultantPhone" placeholder="08169192646">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="activationDate" class="form-label">Date of Approval</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <input type="date" class="form-control" id="approvalDate" placeholder="dd/mm/yy">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-green w-100">Update Consultant</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal For Consultant Details-->
+<div class="modal fade" id="consultantDetailsModal" tabindex="-1" aria-labelledby="consultantDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <h5 class="modal-title" id="consultantDetailsModalLabel">Consultant Details</h5>
+                    <small class="text-muted">Information</small>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">Consultant Details</h6>
+                    <a href="#" class="small text-decoration-none" data-bs-target="#editConsultantModal" data-bs-toggle="modal"><i class="bi bi-pencil"></i> Edit</a>
+                </div>
+                <div class="info-box">
+                    <div class="row gy-2">
+                        <div class="col-12 col-md-4"><strong>Name</strong><br>Tersoo Solomon</div>
+                        <div class="col-12 col-md-4"><strong>Status</strong><br><span class="badge-active">✔ Active</span></div>
+                        <div class="col-12 col-md-4"><strong>Company ID</strong><br>CST-00123</div>
+
+                        <div class="col-12 col-md-4"><strong>Phone</strong><br>08169192646</div>
+                        <div class="col-12 col-md-4"><strong>Email</strong><br>adamu@sons.com</div>
+                        <div class="col-12 col-md-4"><strong>Company Name</strong><br>TaxPro Consulting</div>
+
+                        <div class="col-12 col-md-4"><strong>Specialization</strong><br>Tax Advisory</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-deactivate" type="button">Deactivate Consultant</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/select2/js/select2.full.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+
+    <script>
+        $(document).ready(async function () {
+            //TABLE LOADING DEMO
+            $('#consultantTable2').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+            flatpickr("#approvalDate", {
+                dateFormat: "Y-m-d",
+                allowInput: true,
+                defaultDate: new Date()
+            });
+            //LOADING DATA IN THE TABLE USING DATATABLES
+            $('#consultantTable').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/view/GetConsultants",
+                    "type": "POST",
+                    "dataType": "json",
+                    "data": function (d) {
+                        // Add any additional parameters you need to send to the server
+                        // d.customParam = 'value';
+                    },
+                    "error": function (xhr, error, thrown) {
+                        console.error("DataTables error:", error, thrown);
+                        // Display user-friendly error message
+                        $('#consultantTable').DataTable().clear().draw();
+                        $('#consultantTable').before(
+                            '<div class="alert alert-danger">Failed to load data. Please try again later.</div>'
+                        );
+                    }
+                },
+                "columns": [
+                    { "data": "id", "name": "Id", "autoWidth": true },
+                    { "data": "name", "name": "Name", "autoWidth": true },
+                    { "data": "username", "name": "Username", "autoWidth": true },
+                    { "data": "email", "name": "Email", "autoWidth": true },
+                    { "data": "phone", "name": "Phone", "autoWidth": true },
+                    { "data": "rcnumber", "name": "RcNumber", "autoWidth": true },
+                    { "data": "tin", "name": "Tin", "autoWidth": true },
+                    {
+                        "data": "id",
+                        "name": "Actions",
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "100px",
+                        "render": function (data, type, row) {
+                            return `
+                                                   <div class="">
+                                                      <button type="button" class="btn btn-light dropdown-toggle1 dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fas fa-align-justify"></i>
+                                                      </button>
+                                                      <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                                      </ul>
+                                                    </div>
+                                            `;
+                        }
+                    }
+                ],
+                "responsive": true,
+                "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                "pageLength": 10,
+                "order": [[0, "asc"]],
+                "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+                "language": {
+                    "emptyTable": "No consultants available",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "infoEmpty": "Showing 0 to 0 of 0 entries",
+                    "infoFiltered": "(filtered from _MAX_ total entries)",
+                    "lengthMenu": "Show _MENU_ entries",
+                    "loadingRecords": "Loading...",
+                    "processing": "Processing...",
+                    "search": "Search:",
+                    "zeroRecords": "No matching records found"
+                },
+                "initComplete": function () {
+                    // Initialize tooltips
+                    $('[data-toggle="tooltip"]').tooltip();
+
+                    // Bind edit/delete button events
+                    $('#consultantTable').on('click', '.edit-btn', function () {
+                        const id = $(this).data('id');
+                        editConsultant(id);
+                    });
+
+                    $('#consultantTable').on('click', '.delete-btn', function () {
+                        const id = $(this).data('id');
+                        deleteConsultant(id);
+                    });
+                }
+            });
+
+            //SELECT2 CONFIG
+            $('.specialize').select2({
+                dropdownParent: $('#editConsultantModal'),
+                theme: "classic"
+            });
+
+            //SELECT2 CONFIG
+            $('.specialize2').select2({
+                dropdownParent: $('#addConsultantModal'),
+                theme: "classic",
+                width: 'resolve'
+            });
+
+            try {
+                const browserInfo = getBrowserInfo();
+                const ip = await getIPAddress();
+                const location = await getLocation().catch(e => ({ error: e }));
+
+                const result = {
+                    browserInfo,
+                    ipAddress: ip,
+                    coordinates: location.error ? "Denied/Unavailable" : location
+                };
+
+                console.log("Collected Data:", result);
+                var infoDate = result.browserInfo + ',' + result.coordinates + ',' + result.ipAddress;
+                $("#consultant_Others").val(infoDate);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+
+
+        function getBrowserInfo() {
+            return {
+                browser: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                cookiesEnabled: navigator.cookieEnabled,
+                screenResolution: `${window.screen.width}x${window.screen.height}`
+            };
+        }
+        function getIPAddress() {
+            return $.ajax({
+                url: "https://api.ipify.org?format=json",
+                dataType: "json"
+            }).then(response => response.ip)
+                .catch(() => "Unknown");
+        }
+        function getLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject("Geolocation not supported");
+                } else {
+                    navigator.geolocation.getCurrentPosition(
+                        position => resolve({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                        }),
+                        error => reject(error.message)
+                    );
+                }
+            });
+        }
+
+        function editConsultant(id) {
+            // Your edit logic here
+            console.log('Edit consultant with ID:', id);
+        }
+
+        function deleteConsultant(id) {
+            // Your delete logic here
+            console.log('Delete consultant with ID:', id);
+        }
+
+
+    </script>
+}

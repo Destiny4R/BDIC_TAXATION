@@ -1,0 +1,423 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Annual_ReturnsModel
+@{
+    ViewData["Title"] = "Annual Returns";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">Annual Returns</h5>
+                    <small class="text-muted">Manage Annual Returns</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-plus-lg me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (TempData["success"] != null)
+            {
+                <div class="alert alert-outline-success alert-dismissible fade show mt-2 mb-2" role="alert">
+                    <strong>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <symbol id="check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                            </symbol>
+                        </svg>
+                    </strong> @TempData["success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+                    <strong>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                            <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            </symbol>
+                        </svg>
+                    </strong> @TempData["error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            <table class="table" id="revenuetable">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Player Name</th>
+                        <th>BTIN/Entity ID</th>
+                        <th>Tax Year</th>
+                        <th>Return Status</th>
+                        <th>Date</th>
+                        <th>Amount Declared</th>
+                        <th>Tax Type</th>
+                        <th>Tax Due</th>
+                        <th>Payment Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 15; i++)
+                    {
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Tersoo Solomon</td>
+                            <td>BTIN-9635584</td>
+                            <td>2004-2025</td>
+                            <td><span class="badge bg-success opacity-75">Filed</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>N120,000.00</td>
+                            <td>Corporate Tax</td>
+                            <td>N180,000.00</td>
+                            <td><span class="badge bg-success opacity-75">Paid</span></td>
+                            <td>
+                                <div class="">
+                                    <button type="button" class="btn btn-light" data-bs-toggle="dropdown">
+                                        <i class="mdi mdi-dots-horizontal"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"data-bs-toggle="modal" data-bs-target="#annualReturnModal"><i class="mdi mdi-eye-circle-outline"></i> View</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="mdi mdi-bell-outline"></i> Remind</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="mdi mdi-flag-outline"></i> Flag</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Tersoo Solomon</td>
+                            <td>BTIN-9635584</td>
+                            <td>2004-2025</td>
+                            <td><span class="badge bg-warning opacity-75">Pending</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>N120,000.00</td>
+                            <td>Corporate Tax</td>
+                            <td>N180,000.00</td>
+                            <td><span class="badge bg-danger opacity-75">Not Paid</span></td>
+                            <td>
+                                <div class="">
+                                    <button type="button" class="btn btn-light" data-bs-toggle="dropdown">
+                                        <i class="mdi mdi-dots-horizontal"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" data-bs-target="#annualReturnModal"><i class="mdi mdi-eye-circle-outline"></i> View</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="mdi mdi-bell-outline"></i> Remind</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="mdi mdi-flag-outline"></i> Flag</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Tersoo Solomon</td>
+                            <td>BTIN-9635584</td>
+                            <td>2004-2025</td>
+                            <td><span class="badge bg-danger">Not Filed</span></td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>N120,000.00</td>
+                            <td>Corporate Tax</td>
+                            <td>N180,000.00</td>
+                            <td><span class="badge bg-danger">Overdue</span></td>
+                            <td>
+                                <div class="">
+                                    <button type="button" class="btn btn-light" data-bs-toggle="dropdown">
+                                        <i class="mdi mdi-dots-horizontal"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" data-bs-target="#annualReturnModal"><i class="mdi mdi-eye-circle-outline"></i> View</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="mdi mdi-bell-outline"></i> Remind</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="mdi mdi-flag-outline"></i> Flag</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <div class="modal-body modal-lg">
+                <h5 class="fw-bold">Filter</h5>
+
+                <!-- Tabs -->
+                <ul class="nav nav-tabs nav-fill bg-light rounded-pill mb-3" id="filterTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active rounded-pill" id="tax-year-tab" data-bs-toggle="tab" data-bs-target="#tax-year" type="button">Tax Year</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill" id="filing-status-tab" data-bs-toggle="tab" data-bs-target="#filing-status" type="button">Filing Status</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill" id="tax-type-tab" data-bs-toggle="tab" data-bs-target="#tax-type" type="button">Tax Type</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill" id="payment-status-tab" data-bs-toggle="tab" data-bs-target="#payment-status" type="button">Payment St..</button>
+                    </li>
+                </ul>
+
+                <!-- Tab Panes -->
+                <div class="tab-content">
+
+                    <!-- Tax Year -->
+                    <div class="tab-pane fade show active" id="tax-year">
+                        <div class="mb-3">
+                            <label class="form-label">Tax year</label>
+                            <input type="text" class="form-control flatpickr-year" placeholder="Select tax year">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success">Apply</button>
+                            <button class="btn btn-light">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Filing Status -->
+                    <div class="tab-pane fade" id="filing-status">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="filingStatus" id="filed" value="Filed">
+                            <label class="form-check-label" for="filed">Filed</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="filingStatus" id="notFiled" value="Not Filed">
+                            <label class="form-check-label" for="notFiled">Not Filed</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="filingStatus" id="pending" value="Pending">
+                            <label class="form-check-label" for="pending">Pending</label>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success">Apply</button>
+                            <button class="btn btn-light">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Tax Type -->
+                    <div class="tab-pane fade" id="tax-type">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="taxType" id="personal" value="Personal Income Tax">
+                            <label class="form-check-label" for="personal">Personal Income Tax</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="taxType" id="vat" value="VAT">
+                            <label class="form-check-label" for="vat">VAT</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="taxType" id="corporate" value="Corporate Tax">
+                            <label class="form-check-label" for="corporate">Corporate Tax</label>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success">Apply</button>
+                            <button class="btn btn-light">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Payment Status -->
+                    <div class="tab-pane fade" id="payment-status">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="paymentStatus" id="paid" value="Paid">
+                            <label class="form-check-label" for="paid">Paid</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="paymentStatus" id="notPaid" value="Not Paid">
+                            <label class="form-check-label" for="notPaid">Not Paid</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="paymentStatus" id="overdue" value="Overdue">
+                            <label class="form-check-label" for="overdue">Overdue</label>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success">Apply</button>
+                            <button class="btn btn-light">Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="annualReturnModal" tabindex="-1" aria-labelledby="annualReturnModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold" id="annualReturnModalLabel">Annual Return Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="border row rounded p-3 mb-3">
+                    <div class="col-sm-8">
+                        <p class="mb-1"><span class="fw-semibold">Return for:</span> Adamu & Sons Ltd (2024)</p>
+                        <p class="mb-1"><span class="fw-semibold">BTIN:</span> 0102837465</p>
+                        <p class="mb-0"><span class="fw-semibold">Status:</span> <span class="badge bg-success opacity-75">Filed</span></p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="mb-1"><span class="fw-semibold">Tax Type:</span> Corporate Tax</p>
+                        <p class="mb-0"><span class="fw-semibold">Date:</span> 04 March 2025</p>
+                    </div>
+                </div>
+
+                <h6 class="fw-semibold mb-2">Declared Income & Assets</h6>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="border rounded p-2">
+                            <p class="fw-semibold mb-0">Declared Revenue</p>
+                            <p class="mb-0">₦12,000,000</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-2">
+                            <p class="fw-semibold mb-0">Net Taxable Income</p>
+                            <p class="mb-0">₦11,000,000</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-2">
+                            <p class="fw-semibold mb-0">Tax Rate Applied</p>
+                            <p class="mb-0">%15</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="border rounded p-2">
+                            <p class="fw-semibold mb-0">Claimed Deductions</p>
+                            <p class="mb-0">₦1,000,000</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-2">
+                            <p class="fw-semibold mb-0">Assessed Tax Due</p>
+                            <p class="mb-0">₦1,650,000</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+
+                <h6 class="fw-semibold mb-2">Payment Summary</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Amount Paid</th>
+                                <th scope="col">Payment Date</th>
+                                <th scope="col">Channel</th>
+                                <th scope="col">Payment Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>₦1,650,000</td>
+                                <td>05 March 2025</td>
+                                <td>Online (Bank Transfer)</td>
+                                <td>PAY-884271</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between p-3 bg-light">
+                <button type="button" class="btn btn-outline-secondary d-flex align-items-center">
+                    Request Amendment &nbsp;<i class="ti-reload"></i>
+                    
+                </button>
+                <button type="button" class="btn btn-outline-secondary d-flex align-items-center">
+                    Flag for Audit &nbsp; <i class="mdi mdi-information-outline"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/lib/flatpickr/flatpickr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#revenuetable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false
+            });
+        });
+        flatpickr(".flatpickr-year", {
+            dateFormat: "Y",
+            altInput: true,
+            altFormat: "Y",
+            plugins: [
+                new flatpickr.plugins.yearSelect({}) // Year picker plugin
+            ]
+        });
+    </script>
+}

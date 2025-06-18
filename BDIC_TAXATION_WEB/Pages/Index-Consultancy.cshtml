@@ -1,0 +1,368 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Index_ConsultancyModel
+@{
+    ViewData["Title"] = "Tax Consultancy Dashboard";
+}
+@section Sheets{
+    <link href="~/css/consultant.css" rel="stylesheet" />
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .activity-table th, .activity-table td {
+            vertical-align: middle;
+        }
+    </style>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1rem;
+        }
+
+        .status-success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+}
+<div class="container mt-4">
+    <div class="content-header-left col-md-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="col-sm-8">
+                <div class="">
+                    <div class="h3">
+                        Hello, Tersoo Solomon
+                        <i class="far fa-hand-paper h3 text-warning"></i>
+                    </div>
+                    <p>Welcome to your dashboard</p>
+                </div>
+            </div>
+            <div class="col-sm-4  justify-content-start d-flex justify-content-md-end">
+                <div class="">
+                    <a class="btn" style="background-color:green; color:white;" data-bs-toggle="modal" data-bs-target="#payRevenueModal" href="#"><i class="fa fa-plus">&ensp; Pay Revenue</i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container py-4">
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <div class="row g-3">
+                    <div class="col-sm-12">
+                        <div class="card bg-light-green">
+                            <div class="card-body">
+                                <div class="row mt-4 mb-4">
+                                    <div class="col-sm-2">
+                                        <i class="bi bi-cash-coin fs-1 h1 text-success"></i>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <small>TODAY'S COLLECTION</small>
+                                        <h4 class="mb-0">
+                                            ₦12,426,000.<span class="text-muted">00</span>
+                                        </h4>
+                                    </div>
+                                    <div class="col-sm-5 rounded-3 opacity-50" style="background-color:lightslategrey; color:black;">
+                                        <small>THIS MONTH'S COLLECTION</small>
+                                        <h6 class="mb-0">₦11,000,000.<span class="text-muted">00</span></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="summary-card">
+                            <div class="row mt-4 mb-4">
+                                <div class="col-2">
+                                    <i class="bi bi-graph-up text-success h1"></i>
+                                </div>
+                                <div class="col-8">
+                                    <p class="summary-title">TOTAL REVENUE COLLECTED</p>
+                                    <h2 class="summary-value">₦12,426,000.00</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Revenue Chart</h5>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Activities</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped activity-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Activity Type</th>
+                                    <th>User ID</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th>Receipt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>March 1, 2025</td>
+                                    <td>Tax filing</td>
+                                    <td>USR1001</td>
+                                    <td>
+                                        <span class="badge bg-success">Successful</span>
+                                    </td>
+                                    <td>₦10,000.00</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm">Download receipt</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Pay Revenue for Informal Sector -->
+<div class="modal fade" id="payRevenueModal" tabindex="-1" aria-labelledby="payRevenueModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <strong class="modal-title" id="payRevenueModalLabel">Pay Revenue for Informal Sector</strong>
+                </div>
+                <p>Select the user type</p>
+                <div class="card">
+                    <div class="card-body">
+                        <a href="#" class="list-group-item list-group-item-action" data-bs-target="#registerformModal" data-bs-toggle="modal">
+                            <div class="row">
+                                <div class="col-2 rounded-3 bg-light">
+                                    <div class="d-flex align-items-center mt-3">
+                                        <i class="bi bi-person h1"></i>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <strong class="ms-2">File for a New User</strong><br />
+                                    <span class="text-muted">File for a new informal sector</span>
+                                </div>
+                                <div class="col-2">
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <i class="bi bi-chevron-right h3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="row">
+                                <div class="col-2 rounded-3 bg-light">
+                                    <div class="d-flex align-items-center mt-3">
+                                        <i class="bi bi-person h1"></i>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <strong class="ms-2">File for an existing user</strong>
+                                    <br />
+                                    <small class="text-muted">File for an existing informal sector</small>
+                                </div>
+                                <div class="col-2">
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <i class="bi bi-chevron-right h3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Informal Sector -->
+<div class="modal fade" id="registerformModal" tabindex="-1" aria-labelledby="registerformModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <strong class="modal-title" id="registerformModalLabel">Register Fill in the form to register the informal</strong>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Full Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="business" class="form-label">Business type</label>
+                            <input type="text" class="form-control" id="business" placeholder="Business type">
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" placeholder="Location" />
+                        </div>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-success btn-green w-100">Register Informal Sector</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<!-- Chart.js Library -->
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan 2', 'Jan 3', 'Jan 4', 'Jan 5', 'Jan 6', 'Jan 7', 'Jan 8', 'Jan 9', 'Jan 10'],
+                datasets: [{
+                    label: 'Daily Revenue',
+                    data: [1500, 2000, 1800, 2200, 2400, 2000, 2100, 1900, 2300],
+                    backgroundColor: 'green',
+                    borderColor: 'green',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+}
+

@@ -1,0 +1,73 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Stationary.Local_Station.IndexModel
+@{
+    ViewData["Title"] = "Local Government Stations";
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+}
+<div class="content container-fluid">
+    <div class="content-header-left col-md-12 mb-2">
+        <div class="row breadcrumbs-top">
+            <div class="col-sm-8">
+                <div>
+                    <div class="h3">
+                        <strong>@ViewData["Title"]</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4  justify-content-start d-flex justify-content-md-end">
+                <div class="">
+                    <a class="btn btn-outline-success btn-sm" asp-page="Upsert"><i class="fa fa-plus-square"></i>&ensp; Add LGA</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="">
+                @if (TempData["success"] != null)
+                {
+                    <div class="alert alert-outline-success alert-dismissible fade show mt-2 mb-2" role="alert">
+                        <strong>
+                            <i class="fas fa-info"></i>
+                        </strong> @TempData["success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show mt-2 mb-2" role="alert">
+                        <strong>
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </strong> @TempData["error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+            </div>
+            <table class="table table-responsive table-striped table-bordered table-sm" id="localgovemntstation">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>LGA</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script src="~/js/localgovtstations.js"></script>
+}

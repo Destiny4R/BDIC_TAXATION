@@ -1,0 +1,162 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Corporate.Annual_ReturnModel
+@{
+    ViewData["Title"] = "Annual Returns";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <!-- Left: Title -->
+                <div class="col-md-4">
+                    <h5 class="mb-0 fw-semibold">My Returns</h5>
+                    <small class="text-muted">Manage all returns</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control border-start-0" placeholder="Search">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-outline-secondary d-flex align-items-center" >
+                                <i class="bi bi-funnel me-1"></i> Filter
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-success btn-green d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#fileannualreturnModal">
+                                File Annual Returns
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table" id="returnsTable">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Return Ref ID</th>
+                        <th>Year (Period)</th>
+                        <th>Created</th>
+                        <th>Updated Date</th>
+                        <th>Total Income</th>
+                        <th>Total Expenses</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 30; i++)
+                    {
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>REF-84213579</td>
+                            <td>2023 - 2024</td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td>₦5,125,000.00</td>
+                            <td>₦800,000.00</td>
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm rounded-5" data-bs-toggle="dropdown">
+                                    <i class="ti-settings"></i> &nbsp; View
+                                </button>
+                                <button type="button" class="btn btn-sm btn-success rounded-5" data-bs-toggle="dropdown">
+                                    Submit Return
+                                </button>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="fileannualreturnModal" tabindex="-1" aria-labelledby="fileannualreturnModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-title h3" id="fileannualreturnModalLabel"><strong>File Annual Return</strong></div>
+                <small>Provide detail about the year and asset type</small>
+                <div class="mb-3 mt-3">
+                    <label for="exampleFormControlInput1" class="form-label">Year (Period)</label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>2025-2026</option>
+                        <option value="1">2024-2025</option>
+                        <option value="2">2023-2024</option>
+                        <option value="3">2022-2023</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Assest</label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Select Assest</option>
+                        <option value="1">Beans</option>
+                        <option value="2">Rice</option>
+                        <option value="3">Cows</option>
+                    </select>
+                </div>
+                <div class="d-flex gap-2 w-100 w-md-auto mb-5 mb-md-0 mt-3">
+                    <button type="button" class="btn btn-success w-100">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#returnsTable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+        });
+    </script>
+}

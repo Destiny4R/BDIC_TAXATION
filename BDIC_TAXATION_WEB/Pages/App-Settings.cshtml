@@ -1,0 +1,21 @@
+﻿@page
+@model App_SettingsModel
+@{
+    ViewData["Title"] = "Application Settings";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <div class="card">
+        <div class="card-body">
+            <h4>Revenue payment</h4>
+            <p class="text-muted">Manage and pay your Revenue</p>
+            <div class="text-center mt-5">
+                <img src="https://img.icons8.com/fluency/96/document.png" alt="document" />
+                <h5 class="mt-4 fw-bold">You currently have not made payment</h5>
+                <p class="text-muted">Go ahead and make your first revenue payment</p>
+                <button class="btn btn-success mt-2">Pay revenue</button>
+            </div>
+        </div>
+    </div>
+</div>

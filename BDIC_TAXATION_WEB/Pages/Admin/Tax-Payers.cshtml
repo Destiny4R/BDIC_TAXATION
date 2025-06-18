@@ -1,0 +1,276 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Admin.Tax_PayersModel
+@{
+    ViewData["Title"] = "Tax Payers";
+    int sn = 0;
+}
+@section Sheets{
+    <link href="~/lib/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/lib/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        .nav-tabs .nav-link {
+            border: none;
+            background: #f8f9fa;
+        }
+
+            .nav-tabs .nav-link.active {
+                background: white;
+                font-weight: 600;
+            }
+
+        .modal-content {
+            border-radius: 1rem;
+        }
+        .modal-footer button {
+            min-width: 150px;
+        }
+    </style>
+}
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <!-- Left: Title -->
+                <div>
+                    <h5 class="mb-0 fw-semibold">Tax Payers</h5>
+                    <small class="text-muted">Manage all tax payers</small>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Search Input -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Search">
+                    </div>
+
+                    <!-- Filter Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-funnel me-1"></i> Filter
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-outline-secondary d-flex align-items-center">
+                        <i class="bi bi-cloud-arrow-down me-1"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="btn-group mt-3" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-secondary" for="btnradio1">All</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-secondary" for="btnradio2">Individual</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-secondary" for="btnradio3">Corporations</label>
+            </div>
+
+        </div>
+        <div class="card-body mt-3">
+            <table class="table" id="taxpayersTable">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Tax Payer Name</th>
+                        <th>BTIN/Entity ID</th>
+                        <th>Tax payer type</th>
+                        <th>Business Sector</th>
+                        <th>Registeration Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 15; i++)
+                    {
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Adamu & Sons Ltd</td>
+                            <td>01019635584</td>
+                            <td>Individual</td>
+                            <td>Automotives Sales</td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td><span class="badge bg-success opacity-75">Active</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" href="#" data-bs-toggle="modal" data-bs-target="#taxPayerDetailModal">View</a>
+                                <a class="btn btn-sm btn-light rounded" href="#"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-light rounded" href="#"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+
+                        sn++;
+
+                        <tr>
+                            <td>@(sn)</td>
+                            <td>Adamu & Sons Ltd</td>
+                            <td>01019635584</td>
+                            <td>Individual</td>
+                            <td>Automotives Sales</td>
+                            <td>@DateTime.UtcNow.AddDays(sn)</td>
+                            <td><span class="badge bg-danger opacity-75">Suspended</span></td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary rounded" href="#" data-bs-toggle="modal" data-bs-target="#taxPayerDetailModal">View</a>
+                                <a class="btn btn-sm btn-light rounded" href="#"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-light rounded" href="#"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="taxPayerDetailModal" tabindex="-1" aria-labelledby="taxPayerDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title w-100 text-center" id="taxPayerDetailModalLabel">Tax Payer Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Taxpayer Info Summary -->
+                <h6 class="mb-3">Taxpayer Info Summary</h6>
+                <div class="border rounded p-3 mb-4">
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-borderless ta">
+                            <tr>
+                                <td>
+                                    <label class="text-muted">Name:</label>
+                                    <strong>Adamu & Sons Ltd</strong>
+                                </td>
+                                <td>
+                                    <label class="text-muted">Status:</label>
+                                    <strong><span class="badge bg-success opacity-75">Active</span></strong>
+                                </td>
+                                <td>
+                                    <label class="text-muted">Industry:</label>
+                                    <strong>Automotive Sales</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="text-muted">BTIN / Entity ID:</label>
+                                    <strong>0102837465</strong>
+                                </td>
+                                <td>
+                                    <label class="text-muted">Email:</label>
+                                    <strong>adamu@sons.com</strong>
+                                </td>
+                                <td>
+                                    <label class="text-muted">Registered On: </label> <strong>12 Jan 2023</strong>
+                                </td>
+                            </tr>
+                            <tr >
+                                <td>
+                                    <label class="text-muted">Tax Payer Type: </label><strong>Business</strong>
+                                    
+                                </td>
+                                <td colspan="2">
+                                    <label class="text-muted">Registered Address:</label> <strong>Plot 15, Kaduna Industrial Zone</strong>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                    <!-- Compliance Overview -->
+                    <h6 class="mb-3">Compliance Overview</h6>
+                    <div class="border rounded p-3 mb-4">
+                        <div class="row mb-2">
+                            <div class="col-sm-6 col-md-4"><strong>Returns Filed (Last 12 Months):</strong><br> 3</div>
+                            <div class="col-sm-6 col-md-4"><strong>Outstanding Returns:</strong><br> 0</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-6 col-md-4"><strong>Total Revenue Declared:</strong><br> ₦36,000,000</div>
+                            <div class="col-sm-6 col-md-4"><strong>Total Tax Paid (YTD):</strong><br> ₦5,400,000</div>
+                            <div class="col-sm-6 col-md-4"><strong>Outstanding Liabilities:</strong><br> ₦350,000</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-6 col-md-4"><strong>Last Filing Date:</strong><br> 04 Mar 2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Log -->
+                    <h6 class="mb-3">Recent Activity Log</h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Activity Type</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Payment</td>
+                                    <td>01 Mar 2025</td>
+                                    <td>₦1,800,000 paid for 2024 Corporate Tax</td>
+                                </tr>
+                                <tr>
+                                    <td>Return filed</td>
+                                    <td>01 Mar 2025</td>
+                                    <td>Corporate Tax Return submitted for 2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Penalty Issued</td>
+                                    <td>01 Mar 2025</td>
+                                    <td>₦50,000 late filing penalty</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <a href="#" class="small text-decoration-underline">View Full History</a>
+                </div>
+
+            <div class="container-fluid mb-3">
+                <div class="row g-3">
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-outline-primary w-100">Edit Taxpayer Info</button>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-outline-warning w-100">Flag for Audit</button>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-outline-danger w-100">Suspend Tax Payer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/lib/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/lib/jquery.blockui/jquery.blockui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#taxpayersTable').DataTable({
+                "paging": true,
+                "info": true,
+                "serverSide": false,
+                "lengthChange": false, // Hides the "Show X entries" dropdown
+                "searching": false,
+                responsive: true
+            });
+        });
+    </script>
+}

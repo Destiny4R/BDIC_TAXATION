@@ -1,0 +1,103 @@
+﻿@page
+@model BDIC_TAXATION_WEB.Pages.Tax_Payer.Proceed_PaymentModel
+@{
+    ViewData["Title"] = "Procedd to Make Payment";
+}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class=" mb-1 d-flex justify-content-center">
+                        <strong>Proceed To Pay your Tax - @(Model.pay.assetname)</strong>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">Surname</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" readonly asp-for="pay.lastname" />
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">First Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" readonly asp-for="pay.firstname" />
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">Asset Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" readonly asp-for="pay.assetname" />
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">Amount to Pay</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" readonly asp-for="pay.Amount" />
+                        </div>
+                    </div>
+                    <div class="mb-2 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">Reference Number</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" readonly asp-for="pay.ReferenceNo" />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" readonly asp-for="pay.email" />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">Phone</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" readonly asp-for="pay.phone" />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">Tax Session</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" readonly asp-for="pay.session" />
+                        </div>
+                    </div>
+                    <form class="col-auto">
+                        <button type="button" onClick="handler.openIframe()" class="btn btn-primary mb-3">Pay</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="https://pay.credocentral.com/inline.js"></script>
+    <script>
+        const generateRandomNumber = (min, max) =>
+            Math.floor(Math.random() * (max - min) + min)
+        const transRef = `iy67f${generateRandomNumber(
+            10,
+            60,
+        )}hvc${generateRandomNumber(10, 90)}`
+        let handler = CredoWidget.setup({
+            key: '0PUB1321bo59jiZ6HZnq4Lm2KJelCKoQ', //You should store your API key as an environment variable
+            customerFirstName: '@(Model.pay.firstname)',
+            customerLastName: '@(Model.pay.lastname)',
+            email: '@(Model.pay.email)',
+            amount: @(Model.pay.Amount),
+            currency: 'NGN',
+            renderSize: 0,
+            channels: ['card', 'bank'],
+            reference: '@(Model.pay.ReferenceNo)', // Please generate your own transRef that is unique for each transaction
+            customerPhoneNumber: '@(Model.pay.phone)',
+            callbackUrl: 'https://localhost:44351/Tax-Payer/Message-Payment',
+            onClose: () => {
+                console.log('Widget Closed')
+            },
+            callBack: (response) => {
+                console.log('Successful Payment')
+                console.log(response)
+                window.location.href = response.callbackUrl
+            },
+        })
+    </script>
+}
